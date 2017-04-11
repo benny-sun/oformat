@@ -10,17 +10,17 @@ namespace GhostScript;
 
 class GhostScript
 {
-    public static function convert($outputDir, $formatType, $quality, $input)
+    public static function convert($outputDir, $formatType, $dpi, $quality, $input)
     {
-        $command = 'gs -o %spage_%%03d.jpg -sDEVICE=%s -dJPEGQ=%d %s';
-        $command = sprintf($command, $outputDir, $formatType, $quality, $input);
+        $command = 'gs -o %spage_%%03d.jpg -sDEVICE=%s -r%s -dJPEGQ=%d %s';
+        $command = sprintf($command, $outputDir, $formatType, $dpi, $quality, $input);
         system($command, $output);
 
         return $output;
     }
 
-    public static function convertToJPG($outputDir, $quality, $input)
+    public static function convertToJPG($outputDir, $dpi, $quality, $input)
     {
-        return self::convert($outputDir,'jpeg', $quality, $input);
+        return self::convert($outputDir,'jpeg', $dpi, $quality, $input);
     }
 }

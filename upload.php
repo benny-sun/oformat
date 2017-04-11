@@ -14,28 +14,30 @@ if (isset($_FILES['file'])) {
     $file_tmp = $file['tmp_name'];
     $isError = $file['error'];
     $outputDir  = 'files/';
+    $imgDir = 'img/';
 
     if (!$isError) {
+
         if (!is_dir($outputDir)) {
             mkdir($outputDir);
         }
+
+        if (!is_dir($imgDir)){
+            mkdir($imgDir);
+        }
+
         if (move_uploaded_file($file_tmp, $outputDir.$file_name)){
 
+            $upload_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
+
             Libreoffice::convertToPDF($outputDir, $outputDir.$file_name);
-            GhostScript::convertToJPG($outputDir, 100, $outputDir.$pure_fname.'.pdf');
+            GhostScript::convertToJPG($imgDir, 72, 75, $outputDir.$pure_fname.'.pdf');
 
-/*=============別人的===================*/
-//            $pdf = new PDF2Image($outputDir.'.pdf');
-//            foreach (range(1, $pdf->getNumberOfPages()) as $pageNumber) {
-//                $pdf->setPage($pageNumber)
-//                    ->setResolution(72)
-//                    ->saveImage('files/page'.$pageNumber.'.jpg');
-//            }
-/*================================*/
-
-            echo '<p>convert completed</p>';
-//            echo '<img src="'.$outputDir.'.jpg" style="width: 20vh; height: auto;">';
-
+            $format_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] - $upload_time;
+            echo '<p>轉換完成</p>';
+            echo '<p>總耗時 ',round($upload_time + $format_time,4),'秒</p>';
+            echo '<p>上傳耗時 ',round($upload_time,4),' 秒</p>';
+            echo '<p>轉換耗時 ',round($format_time,4),' 秒</p>';
         }
     } else {
         echo 'ERROR';
