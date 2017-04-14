@@ -11,13 +11,73 @@ namespace GenerateHTML;
 
 class GenerateHTML
 {
-    protected $php_page = '';
+    protected $url = '';
+
+    protected $dir = '';
 
     protected $file_name = 'default.html';
 
-    public function __construct($php_page)
+    protected $log;
+
+    protected $isError = true;
+
+    public function __construct($url)
     {
-        $this->php_page = $php_page;
+
+        $this->url = $url;
+
+        switch ($this->getHttpCode($url)){
+            case 0:
+                $this->setErrorLog('net::ERR_NAME_NOT_RESOLVED');
+                return false;
+            case 403:
+                $this->setErrorLog('403 Forbidden');
+                return false;
+            case 404:
+                $this->setErrorLog('404 Not Found');
+                return false;
+            case 500:
+                $this->setErrorLog('500 Internal Server Error');
+                return false;
+        }
+
+        $this->isError = false;
+
+    }
+
+    private function getHttpCode($url)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,10);
+        $output = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return $httpcode;
+    }
+
+    private function setErrorLog($log)
+    {
+        $this->log = $log;
+        $time = date("Y-m-d H:i:s");
+        $txt = sprintf("[%s] URL:%s  Status: %s\n", $time, $this->url, $log);
+        file_put_contents('log.txt', $txt, FILE_APPEND);
+    }
+
+    public function createFolder($dir)
+    {
+
+        $parts = explode('/', $dir);
+        foreach($parts as $part)
+            if(!is_dir($dir .= "/$part")) mkdir($dir, 0700);
+
+        $this->dir = $dir;
+
+        return $this;
+
     }
 
     public function setFileName($file_name)
@@ -29,20 +89,20 @@ class GenerateHTML
 
     public function saveHTML()
     {
-        $content = file_get_contents($this->php_page);
 
-        $fp = fopen($this->file_name,'w');
+        if ($this->isError) return false;
 
-        fwrite($fp, $content);
+        $content = file_get_contents($this->url);
 
-        fclose($fp);
+        file_put_contents("$this->dir/$this->file_name", $content);
+
     }
 
     public function savePHPFile()
     {
         ob_start();
 
-        include "$this->php_page";
+        include "$this->url";
 
         $content = ob_get_contents();
 

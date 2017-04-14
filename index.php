@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="UTF-8" />
         <title>PDF converter</title>
     </head>
     <body>
@@ -8,31 +9,30 @@
             <input type="submit" value="upload">
         </form>
     <?php
-//    echo 'time() = ',microtime(true);
-//    echo '<br>';
-//    echo '$_SERVER[\'REQUEST_TIME\'] = ',$_SERVER['REQUEST_TIME_FLOAT'];
-//    echo '<br>';
-//    sleep(2);
-//    echo '睡2秒';
-//    echo '<br>';
-//    echo 'time() = ',microtime(true);
-//    echo '<br>';
-//    echo '$_SERVER[\'REQUEST_TIME\'] = ',$_SERVER['REQUEST_TIME_FLOAT'];
-//    echo '<br>';
-//    echo '跑', microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] ,'秒'
+//    $url = 'https://www.w3schools.com/images/';
+    $url = 'http://www.example.com';
+
+    require 'GenerateHTML.php';
+    use GenerateHTML\GenerateHTML;
+    $html = new GenerateHTML($url);
+    $html->createFolder('test/haha')->setFileName('abc')->saveHTML();
+
+    echo '<pre>';
+    echo file_get_contents( "log.txt" );
+    echo '</pre>';
+
+
+
+
+
+//    print_r(get_headers($url, 1));
+
+//    $dir    = '.';
+//    $files1 = scandir($dir);
+//    $files2 = scandir($dir, 1);
+//    foreach ($files1 as $row){
+//        echo $row, '<br>';
+//    }
     ?>
     </body>
 </html>
-<?php
-
-//引入Class
-require 'GenerateHTML.php';
-use GenerateHTML\GenerateHTML;
-
-//讀取要轉換的URL內容
-$html = new GenerateHTML('https://www.yam.com/');
-
-//設定路徑檔名並儲存
-$html->setFileName('abc.html')->saveHTML();
-
-?>
