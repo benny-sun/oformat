@@ -9,13 +9,23 @@
             <input type="submit" value="upload">
         </form>
     <?php
-//    $url = 'https://www.w3schools.com/images/';
-    $url = 'http://www.example.com';
+    $url = 'https://www.w3schools.com/images/';
+//    $url = 'http://www.example.com/xxx';
 
     require 'GenerateHTML.php';
-    use GenerateHTML\GenerateHTML;
     $html = new GenerateHTML($url);
-    $html->createFolder('test/haha')->setFileName('abc')->saveHTML();
+    $html->saveHTML();
+//    $agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
+//    $ch = curl_init($url);
+//    curl_setopt($ch, CURLOPT_HEADER, true);
+//    curl_setopt($ch, CURLOPT_NOBODY, true);
+//    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+//    curl_setopt($ch, CURLOPT_TIMEOUT,10);
+//    curl_setopt($ch, CURLOPT_USERAGENT, 'User-Agent: curl/7.39.0');
+//    $output = curl_exec($ch);
+//    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//    curl_close($ch);
+//echo $http_code;
 
     echo '<pre>';
     echo file_get_contents( "log.txt" );

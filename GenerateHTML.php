@@ -1,13 +1,12 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: User
+ * User: Haogood
  * Date: 2017/4/11
  * Time: 下午 01:38
  */
 
-namespace GenerateHTML;
-
+//namespace GenerateHTML;
 
 class GenerateHTML
 {
@@ -23,10 +22,16 @@ class GenerateHTML
 
     public function __construct($url)
     {
-
         $this->url = $url;
 
-        switch ($this->getHttpCode($url)){
+        $http_code = $this->getHttpCode($url);
+
+        if ($this->checkURL($http_code)) $this->isError = false;
+    }
+
+    private function checkURL($http_code)
+    {
+        switch ($http_code){
             case 0:
                 $this->setErrorLog('net::ERR_NAME_NOT_RESOLVED');
                 return false;
@@ -40,12 +45,9 @@ class GenerateHTML
                 $this->setErrorLog('500 Internal Server Error');
                 return false;
         }
-
-        $this->isError = false;
-
     }
 
-    private function getHttpCode($url)
+    public function getHttpCode($url)
     {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, true);
@@ -53,10 +55,10 @@ class GenerateHTML
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch, CURLOPT_TIMEOUT,10);
         $output = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        return $httpcode;
+        return $http_code;
     }
 
     private function setErrorLog($log)
@@ -67,14 +69,14 @@ class GenerateHTML
         file_put_contents('log.txt', $txt, FILE_APPEND);
     }
 
-    public function createFolder($dir)
+    public function setDir($dir)
     {
 
         $parts = explode('/', $dir);
-        foreach($parts as $part)
-            if(!is_dir($dir .= "/$part")) mkdir($dir, 0700);
-
-        $this->dir = $dir;
+        foreach($parts as $part){
+            $this->dir .= "$part/";
+            if(!is_dir($this->dir)) mkdir($this->dir);
+        }
 
         return $this;
 
@@ -89,12 +91,13 @@ class GenerateHTML
 
     public function saveHTML()
     {
-
         if ($this->isError) return false;
 
         $content = file_get_contents($this->url);
 
-        file_put_contents("$this->dir/$this->file_name", $content);
+        $path = $this->dir . $this->file_name;
+
+        file_put_contents($path, $content);
 
     }
 
