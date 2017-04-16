@@ -6,15 +6,15 @@
  * Time: 下午 01:38
  */
 
-//namespace GenerateHTML;
+//namespace HTML;
 
-class GenerateHTML
+class HTML
 {
     protected $url = '';
 
     protected $dir = '';
 
-    protected $file_name = 'default.html';
+    protected $file_name = 'default';
 
     protected $log;
 
@@ -26,10 +26,10 @@ class GenerateHTML
 
         $http_code = $this->getHttpCode($url);
 
-        if ($this->checkURL($http_code)) $this->isError = false;
+        if ($this->checkUrlCorrect($http_code)) $this->isError = false;
     }
 
-    private function checkURL($http_code)
+    private function checkUrlCorrect($http_code)
     {
         switch ($http_code){
             case 0:
@@ -44,16 +44,23 @@ class GenerateHTML
             case 500:
                 $this->setErrorLog('500 Internal Server Error');
                 return false;
+            default:
+                return true;
         }
     }
 
-    public function getHttpCode($url)
+    private function getHttpCode($url)
     {
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_TIMEOUT,10);
+        $options = array(
+            CURLOPT_HEADER => true,
+            CURLOPT_NOBODY => true,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_TIMEOUT => 10,
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSL_VERIFYPEER => 0,
+        );
+        curl_setopt_array($ch, $options);
         $output = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
@@ -71,7 +78,7 @@ class GenerateHTML
 
     public function setDir($dir)
     {
-
+        $this->dir = '';
         $parts = explode('/', $dir);
         foreach($parts as $part){
             $this->dir .= "$part/";
@@ -84,14 +91,16 @@ class GenerateHTML
 
     public function setFileName($file_name)
     {
-        $this->file_name = $file_name;
+        $this->file_name = $file_name . '.html';
 
         return $this;
     }
 
     public function saveHTML()
     {
-        if ($this->isError) return false;
+
+//        if ($this->isError) throw new Exception('Wrong URL.');
+        if ($this->isError) return;
 
         $content = file_get_contents($this->url);
 
@@ -101,18 +110,9 @@ class GenerateHTML
 
     }
 
-    public function savePHPFile()
+    public function __destruct()
     {
-        ob_start();
-
-        include "$this->url";
-
-        $content = ob_get_contents();
-
-        $fp = fopen($this->file_name,'w');
-
-        fwrite($fp, $content);
-
-        fclose($fp);
+//        echo __FUNCTION__;
     }
+
 }
