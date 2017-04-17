@@ -11,21 +11,30 @@
     <?php
     $arr = array(
         'https://www.w3schools.com/images/',
-        'http://www.example.com',
-        'http://www.example.com',
+        'http://www.example.com?k=1',
+        'http://www.example.com?k=2',
+        'https://www.google.com.tw',
         'http://www.example.com/xxx',
         'https://www.w3schools.com/',
     );
 
     require 'HTML.php';
-    foreach ($arr as $key => $row){
-        $html = new HTML($row);
-        $html->setDir('x/abc')->setFileName('a'.$key)->saveHTML();
-    }
+    $html = new HTML('https://www.w3schools.com/images/');
+    $html->save();
+//    $html->setDir('r/one')->save();
+//    echo '<pre>';
+//    print_r(HTML::getHttpCode2($arr));
+//    echo '</pre>';
 
-    echo '<pre>';
-    echo file_get_contents( "log.txt" );
-    echo '</pre>';
+//    foreach ($arr as $key => $row){
+//        echo HTML::getHttpCode($row), '<br>';
+//        $html = new HTML($row);
+//        $html->setDir('x/abc')->setFileName('a'.$key)->saveHTML();
+//    }
+
+//    echo '<pre>';
+//    echo file_get_contents( "log.txt" );
+//    echo '</pre>';
 
 
 
