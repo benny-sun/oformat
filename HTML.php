@@ -10,37 +10,142 @@
 
 class HTML
 {
-    protected $url = '';
-
     protected $dir = '';
-
-    protected $data, $log;
-
-    protected $http_code, $http_contents;
 
     protected $file_name = 'default';
 
+    protected $url, $http_code, $http_contents;
+
+    protected $file_name_array = array();
+
     protected $isError = true;
 
-    private $curl_options = array(
+    protected static $pattern = '/"|\\\\|<|>|\*|\/|:|\?|\|/';
+
+    private $curl_options = [
         CURLOPT_HEADER => false,
         CURLOPT_NOBODY => false,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 10,
         CURLOPT_SSL_VERIFYHOST => 0,
         CURLOPT_SSL_VERIFYPEER => 0,
-    );
+    ];
+
+    protected static $code_array = [
+        //Informational 1xx
+        100 => 'Continue',
+        101 => 'Switching Protocols',
+        102 => 'Processing',
+        //Successful 2xx
+        200 => 'OK',
+        201 => 'Created',
+        202 => 'Accepted',
+        203 => 'Non-Authoritative Information',
+        204 => 'No Content',
+        205 => 'Reset Content',
+        206 => 'Partial Content',
+        207 => 'Multi-Status',
+        208 => 'Already Reported',
+        226 => 'IM Used',
+        //Redirection 3xx
+        300 => 'Multiple Choices',
+        301 => 'Moved Permanently',
+        302 => 'Found',
+        303 => 'See Other',
+        304 => 'Not Modified',
+        305 => 'Use Proxy',
+        306 => '(Unused)',
+        307 => 'Temporary Redirect',
+        308 => 'Permanent Redirect',
+        //Client Error 4xx
+        400 => 'Bad Request',
+        401 => 'Unauthorized',
+        402 => 'Payment Required',
+        403 => 'Forbidden',
+        404 => 'Not Found',
+        405 => 'Method Not Allowed',
+        406 => 'Not Acceptable',
+        407 => 'Proxy Authentication Required',
+        408 => 'Request Timeout',
+        409 => 'Conflict',
+        410 => 'Gone',
+        411 => 'Length Required',
+        412 => 'Precondition Failed',
+        413 => 'Request Entity Too Large',
+        414 => 'Request-URI Too Long',
+        415 => 'Unsupported Media Type',
+        416 => 'Requested Range Not Satisfiable',
+        417 => 'Expectation Failed',
+        418 => 'I\'m a teapot',
+        421 => 'Misdirected Request',
+        422 => 'Unprocessable Entity',
+        423 => 'Locked',
+        424 => 'Failed Dependency',
+        426 => 'Upgrade Required',
+        428 => 'Precondition Required',
+        429 => 'Too Many Requests',
+        431 => 'Request Header Fields Too Large',
+        444 => 'Connection Closed Without Response',
+        451 => 'Unavailable For Legal Reasons',
+        499 => 'Client Closed Request',
+        //Server Error 5xx
+        500 => 'Internal Server Error',
+        501 => 'Not Implemented',
+        502 => 'Bad Gateway',
+        503 => 'Service Unavailable',
+        504 => 'Gateway Timeout',
+        505 => 'HTTP Version Not Supported',
+        506 => 'Variant Also Negotiates',
+        507 => 'Insufficient Storage',
+        508 => 'Loop Detected',
+        510 => 'Not Extended',
+        511 => 'Network Authentication Required',
+        599 => 'Network Connect Timeout Error',
+    ];
+
 
     public function __construct($url)
     {
         $this->url = $url;
-        $this->data = $url;
 
         if (is_array($url)) {
-            $this->getUrlInfoBatch($url);
+            if ($this->validArrayLength($url)) $this->getUrlInfoBatch($this->url);
         } else {
             $this->getUrlInfo($url);
         }
+    }
+
+    private function validArrayLength($url)
+    {
+        switch ($this->get_array_depth($url)) {
+            case 1:
+                return true;
+            case 2:
+                if (sizeof($url[0]) != sizeof($url[1])) {
+                    throw new Exception('陣列長度不一致');
+                }
+                list($this->url, $this->file_name_array) = $url;
+                return true;
+            default:
+                throw new Exception('上限為二維陣列');
+        }
+    }
+
+    private function get_array_depth(array $array)
+    {
+        $max_depth = 1;
+
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                $depth = $this->get_array_depth($value) + 1;
+
+                if ($depth > $max_depth) {
+                    $max_depth = $depth;
+                }
+            }
+        }
+
+        return $max_depth;
     }
     
     private function getUrlInfo($url)
@@ -58,46 +163,38 @@ class HTML
 
     private function checkUrlCorrect($http_code)
     {
-        switch ($http_code){
-            case 0:
-                $this->setErrorLog('net::ERR_NAME_NOT_RESOLVED');
-                return false;
-            case 403:
-                $this->setErrorLog('403 Forbidden');
-                return false;
-            case 404:
-                $this->setErrorLog('404 Not Found');
-                return false;
-            case 500:
-                $this->setErrorLog('500 Internal Server Error');
-                return false;
-            default:
+        switch ($http_code) {
+            case 200:
                 return true;
+            default:
+                $this->setErrorLog($http_code, static::$code_array[$http_code]);
+                return false;
         }
     }
 
     private function checkUrlCorrectBatch($http_code_arr)
     {
+        if (sizeof($this->file_name_array) > 0) $this->switch_file_name_array_key($http_code_arr);
+
         foreach ($http_code_arr as $key => $value) {
+
             $this->url = $key;
-            switch ($value){
-                case 0:
-                    $this->setErrorLog('net::ERR_NAME_NOT_RESOLVED');
-                    unset($this->http_contents[$key]);
-                    break;
-                case 403:
-                    $this->setErrorLog('403 Forbidden');
-                    unset($this->http_contents[$key]);
-                    break;
-                case 404:
-                    $this->setErrorLog('404 Not Found');
-                    unset($this->http_contents[$key]);
-                    break;
-                case 500:
-                    $this->setErrorLog('500 Internal Server Error');
-                    unset($this->http_contents[$key]);
-                    break;
+            $this->setErrorLog($value, static::$code_array[$value]);
+
+            if ($value != 200) {
+                unset($this->http_contents[$key], $this->file_name_array[$key]);
             }
+
+        }
+    }
+
+    private function switch_file_name_array_key(array $http_code_arr)
+    {
+        $i=0;
+        foreach ($http_code_arr as $key => $value) {
+            $this->file_name_array[$key] = preg_replace(static::$pattern, ' ',$this->file_name_array[$i]);
+            unset($this->file_name_array[$i]);
+            $i++;
         }
     }
 
@@ -140,11 +237,10 @@ class HTML
         return [$code, $res];
     }
 
-    private function setErrorLog($log)
+    private function setErrorLog($code, $msg)
     {
-        $this->log = $log;
         $time = date("Y-m-d H:i:s");
-        $txt = sprintf("[%s] %s :: %s\n", $time, $this->url, $log);
+        $txt = sprintf("[%s] %s [%d %s]\n", $time, $this->url, $code, $msg);
         file_put_contents('log.txt', $txt, FILE_APPEND);
     }
 
@@ -162,7 +258,7 @@ class HTML
 
     public function setFileName($file_name)
     {
-        $this->file_name = $file_name;
+        $this->file_name = preg_replace(static::$pattern, ' ',$file_name);
 
         return $this;
     }
@@ -170,10 +266,20 @@ class HTML
     private function saveBatch()
     {
         $i = 1;
-        foreach ($this->http_contents as $content) {
-            $path = sprintf('%s%s%03d.html', $this->dir, $this->file_name, $i);
-            file_put_contents($path, $content);
-            $i++;
+        if (sizeof($this->file_name_array) > 0) {   //用自訂檔名
+            foreach ($this->http_contents as $key => $content) {
+                $path = sprintf('%s%s-%004d.html', $this->dir, $this->file_name_array[$key], $i);
+                echo $path, '<br>';
+                file_put_contents($path, $content);
+                $i++;
+            }
+        } else {
+            foreach ($this->http_contents as $key => $content) {    //用預設檔名
+                $path = sprintf('%s%s-%004d.html', $this->dir, $this->file_name, $i);
+                echo $path, '<br>';
+                file_put_contents($path, $content);
+                $i++;
+            }
         }
     }
 
@@ -186,7 +292,7 @@ class HTML
 
     public function save()
     {
-        if (is_array($this->data)) {
+        if (is_array($this->http_contents)) {
             $this->saveBatch();
         } else {
             $this->saveSingle();
