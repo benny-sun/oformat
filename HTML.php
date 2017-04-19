@@ -32,6 +32,7 @@ class HTML
     ];
 
     protected static $code_array = [
+        0 => 'net::ERR_NAME_NOT_RESOLVED',
         //Informational 1xx
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -103,20 +104,22 @@ class HTML
         599 => 'Network Connect Timeout Error',
     ];
 
-
     public function __construct($url)
     {
         $this->url = $url;
 
         if (is_array($url)) {
-            if ($this->validArrayLength($url)) $this->getUrlInfoBatch($this->url);
+            if ($this->validArray($url)) $this->getUrlInfoBatch($this->url);
         } else {
             $this->getUrlInfo($url);
         }
+
+//        $this->writeLog($this->http_code);
     }
 
-    private function validArrayLength($url)
+    private function validArray($url)   //for batch
     {
+
         switch ($this->get_array_depth($url)) {
             case 1:
                 return true;
@@ -125,13 +128,15 @@ class HTML
                     throw new Exception('陣列長度不一致');
                 }
                 list($this->url, $this->file_name_array) = $url;
+
                 return true;
             default:
                 throw new Exception('上限為二維陣列');
         }
+
     }
 
-    private function get_array_depth(array $array)
+    private function get_array_depth(array $array)  //for batch
     {
         $max_depth = 1;
 
@@ -150,15 +155,19 @@ class HTML
     
     private function getUrlInfo($url)
     {
-        $http_code = $this->getHttpCode($url);
-        if ($this->checkUrlCorrect($http_code)) $this->isError = false;
+        $this->http_code = $this->getHttpCode($url);
+        if ($this->checkUrlCorrect($this->http_code)) $this->isError = false;
     }
 
-    private function getUrlInfoBatch($url_array)
+    private function getUrlInfoBatch($url_array)    //for batch
     {
+
         list($this->http_code, $this->http_contents) = $this->getHttpCodeBatch($url_array);
 
+        if (sizeof($this->file_name_array) > 0) $this->replace_array_key($this->http_code);
+
         $this->checkUrlCorrectBatch($this->http_code);
+
     }
 
     private function checkUrlCorrect($http_code)
@@ -167,28 +176,26 @@ class HTML
             case 200:
                 return true;
             default:
-                $this->setErrorLog($http_code, static::$code_array[$http_code]);
                 return false;
         }
     }
 
-    private function checkUrlCorrectBatch($http_code_arr)
+    private function checkUrlCorrectBatch($http_code_arr)   //for batch
     {
-        if (sizeof($this->file_name_array) > 0) $this->switch_file_name_array_key($http_code_arr);
 
         foreach ($http_code_arr as $key => $value) {
 
             $this->url = $key;
-            $this->setErrorLog($value, static::$code_array[$value]);
 
             if ($value != 200) {
                 unset($this->http_contents[$key], $this->file_name_array[$key]);
             }
 
         }
+
     }
 
-    private function switch_file_name_array_key(array $http_code_arr)
+    private function replace_array_key(array $http_code_arr)    //for batch
     {
         $i=0;
         foreach ($http_code_arr as $key => $value) {
@@ -210,7 +217,7 @@ class HTML
         return $http_code;
     }
 
-    private function getHttpCodeBatch($url_arr)
+    private function getHttpCodeBatch($url_arr)    //for batch
     {
         $mh = curl_multi_init();
         $ch_array = array();
@@ -219,7 +226,7 @@ class HTML
             curl_setopt_array($ch_array[$i], $this->curl_options);
             curl_multi_add_handle($mh, $ch_array[$i]);
         }
-        
+
         $running = NULL;
         do {
             curl_multi_exec($mh, $running);
@@ -233,14 +240,28 @@ class HTML
             curl_multi_remove_handle($mh, $ch_array[$i]);
         }
         curl_multi_close($mh);
-        
+
         return [$code, $res];
     }
 
-    private function setErrorLog($code, $msg)
+    private function writeLog($http_code) {
+        if (is_array($http_code)) {
+            foreach ($http_code as $key => $value) {
+                $status = 'OK';
+                if ($value != 200) $status = 'ER';
+                $this->setErrorLog($status, $value, static::$code_array[$value], $key);
+            }
+        } else {
+            $status = 'OK';
+            if ($http_code != 200) $status = 'ER';
+            $this->setErrorLog($status, $http_code, static::$code_array[$http_code], $this->url);
+        }
+    }
+
+    private function setErrorLog($status, $code, $msg, $url)
     {
         $time = date("Y-m-d H:i:s");
-        $txt = sprintf("[%s] %s [%d %s]\n", $time, $this->url, $code, $msg);
+        $txt = sprintf("[%s] [%s] [%d %s] %s\n", $status, $time, $code, $msg, $url);
         file_put_contents('log.txt', $txt, FILE_APPEND);
     }
 
@@ -268,15 +289,13 @@ class HTML
         $i = 1;
         if (sizeof($this->file_name_array) > 0) {   //用自訂檔名
             foreach ($this->http_contents as $key => $content) {
-                $path = sprintf('%s%s-%004d.html', $this->dir, $this->file_name_array[$key], $i);
-                echo $path, '<br>';
+                $path = sprintf('%s(%004d)%s', $this->dir, $i, $this->file_name_array[$key]);
                 file_put_contents($path, $content);
                 $i++;
             }
         } else {
             foreach ($this->http_contents as $key => $content) {    //用預設檔名
-                $path = sprintf('%s%s-%004d.html', $this->dir, $this->file_name, $i);
-                echo $path, '<br>';
+                $path = sprintf('%s%004d-%s', $this->dir, $i, $this->file_name);
                 file_put_contents($path, $content);
                 $i++;
             }
@@ -285,9 +304,10 @@ class HTML
 
     private function saveSingle()
     {
-        if ($this->isError) return;
-        $path = sprintf('%s%s.html', $this->dir, $this->file_name);
+        $path = sprintf('%s%s', $this->dir, $this->file_name);
         file_put_contents($path, $this->http_contents);
+
+        return $this->http_code;
     }
 
     public function save()
@@ -295,7 +315,7 @@ class HTML
         if (is_array($this->http_contents)) {
             $this->saveBatch();
         } else {
-            $this->saveSingle();
+            return $this->saveSingle();
         }
     }
 }
