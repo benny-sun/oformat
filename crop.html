@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crop Image</title>
+    <link  href="dist/cropper.css" rel="stylesheet">
+    <script src="dist/cropper.js"></script>
+    <script src="dist/jquery-3.2.1.min.js"></script>
+    <style>
+        img {
+            max-width: 100%; /* This rule is very important, please do not ignore this! */
+        }
+    </style>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div>
+        <img id="image" src="53.jpg">
+    </div>
+
+    <a class="btn btn-success" onclick="upload()">UPLOAD</a>
+    <a class="btn btn-info" onclick="square()">1:1</a>
+    <a class="btn btn-warning" onclick="FourThree()">4:3</a>
+    <a class="btn btn-primary" onclick="SixteenNine()">16:9</a>
+
+    <script>
+        var image = document.getElementById('image');
+        var cropper = new Cropper(image, {
+            aspectRatio: 16 / 9,
+            crop: function(e) {
+                console.log(e.detail.x);
+                console.log(e.detail.y);
+                console.log(e.detail.width);
+                console.log(e.detail.height);
+                console.log(e.detail.rotate);
+                console.log(e.detail.scaleX);
+                console.log(e.detail.scaleY);
+            }
+        });
+
+        function square() {
+            cropper.setAspectRatio(1);
+        }
+
+        function FourThree() {
+            cropper.setAspectRatio(4/3);
+        }
+
+        function SixteenNine() {
+            cropper.setAspectRatio(16/9);
+        }
+
+        function upload() {
+            cropper.getCroppedCanvas().toBlob(function (blob) {
+                var formData = new FormData();
+                var filename ='crop2.jpg';
+                formData.append('croppedImage', blob, filename);
+
+                $.ajax({
+                    url: "crop.php",
+                    method: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        console.log('Upload success');
+                    },
+                    error: function () {
+                        console.log('Upload error');
+                    }
+                });
+
+            }, 'image/jpeg')
+        }
+    </script>
+</body>
+</html>
