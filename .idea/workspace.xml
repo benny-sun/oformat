@@ -1,30 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a9dca00b-8a67-437f-8774-7003c2207641" name="Default" comment="1. change class name GenerateHTML to HTML&#10;2. curl ssl visit&#10;3. fix mkdir nested bug">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CropPhoto/demo.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CropPhoto/crop.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CropPhoto/crop.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Office2Photo/index.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Thumbnails/thumbnail.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/53.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/crop.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/crop.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Exceptions/InvalidFormat.php" afterPath="$PROJECT_DIR$/Office2Photo/Exceptions/InvalidFormat.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Exceptions/PageDoesNotExist.php" afterPath="$PROJECT_DIR$/Office2Photo/Exceptions/PageDoesNotExist.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Exceptions/PdfDoesNotExist.php" afterPath="$PROJECT_DIR$/Office2Photo/Exceptions/PdfDoesNotExist.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/GhostScript.php" afterPath="$PROJECT_DIR$/Office2Photo/GhostScript.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/HTML.php" afterPath="$PROJECT_DIR$/CatchStaticHtml/HTML.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Image.php" afterPath="$PROJECT_DIR$/Thumbnails/Image.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Libreoffice.php" afterPath="$PROJECT_DIR$/Office2Photo/Libreoffice.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/PDF2Image.php" afterPath="$PROJECT_DIR$/Office2Photo/PDF2Image(ref).php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/dist/cropper.css" afterPath="$PROJECT_DIR$/CropPhoto/dist/cropper.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/dist/cropper.js" afterPath="$PROJECT_DIR$/CropPhoto/dist/cropper.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/dist/cropper.min.css" afterPath="$PROJECT_DIR$/CropPhoto/dist/cropper.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/dist/cropper.min.js" afterPath="$PROJECT_DIR$/CropPhoto/dist/cropper.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/dist/jquery-3.2.1.min.js" afterPath="$PROJECT_DIR$/CropPhoto/dist/jquery-3.2.1.min.js" />
+    <list default="true" id="a9dca00b-8a67-437f-8774-7003c2207641" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/composerJson.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/oformat.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,7 +27,18 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="5" lean-forward="false" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -149,6 +143,7 @@
         <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/Office2Photo/index.php" />
         <option value="$PROJECT_DIR$/HTML.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -208,8 +203,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -217,18 +212,19 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../tu" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="add_unversioned_files" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\wamp\www\oformat" />
-      <recent name="D:\wamp\www\oformat\L1\L2\L3\L4" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\wamp\www\oformat\Office2Photo" />
       <recent name="D:\wamp\www\oformat\Thumbnails" />
       <recent name="D:\wamp\www\oformat\CatchStaticHtml" />
       <recent name="D:\wamp\www\oformat\crop" />
       <recent name="D:\wamp\www\oformat" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\wamp\www\oformat" />
+      <recent name="D:\wamp\www\oformat\L1\L2\L3\L4" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -350,7 +346,8 @@
       <workItem from="1492761338999" duration="8117000" />
       <workItem from="1492994581773" duration="26018000" />
       <workItem from="1493102670931" duration="3990000" />
-      <workItem from="1493106680944" duration="5000" />
+      <workItem from="1493106680944" duration="197000" />
+      <workItem from="1493106892376" duration="63000" />
     </task>
     <task id="LOCAL-00001" summary="1. get file uploading and converting time&#10;2. generate dynamic url to static html">
       <created>1491909230099</created>
@@ -415,23 +412,30 @@
       <option name="project" value="LOCAL" />
       <updated>1493106614522</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="wrap all function model and push up to github">
+      <created>1493106730671</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1493106730671</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="235815000" />
+    <option name="totallyTimeSpent" value="236070000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2264151" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22974473" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.50221974" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32478634" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32905984" sideWeight="0.49778023" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32799146" sideWeight="0.49778023" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -487,7 +491,8 @@
     <MESSAGE value="image cropper" />
     <MESSAGE value="1. wrap all function model" />
     <MESSAGE value="wrap all function model" />
-    <option name="LAST_COMMIT_MESSAGE" value="wrap all function model" />
+    <MESSAGE value="wrap all function model and push up to github" />
+    <option name="LAST_COMMIT_MESSAGE" value="wrap all function model and push up to github" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -496,7 +501,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/2019/QQ" />
     <entry file="file://$PROJECT_DIR$/log.txt" />
     <entry file="file://$PROJECT_DIR$/2019/[0001]default" />
     <entry file="file://$PROJECT_DIR$/L1/L2/L3/L4/HTML.php" />
@@ -632,6 +636,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="20" column="25" lean-forward="true" selection-start-line="20" selection-start-column="25" selection-end-line="20" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="5" lean-forward="false" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
