@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a9dca00b-8a67-437f-8774-7003c2207641" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/composerJson.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/oformat.iml" afterPath="" />
@@ -347,7 +346,7 @@
       <workItem from="1492994581773" duration="26018000" />
       <workItem from="1493102670931" duration="3990000" />
       <workItem from="1493106680944" duration="197000" />
-      <workItem from="1493106892376" duration="63000" />
+      <workItem from="1493106892376" duration="180000" />
     </task>
     <task id="LOCAL-00001" summary="1. get file uploading and converting time&#10;2. generate dynamic url to static html">
       <created>1491909230099</created>
@@ -419,11 +418,18 @@
       <option name="project" value="LOCAL" />
       <updated>1493106730671</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="remove .idea">
+      <created>1493106975236</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1493106975236</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="236070000" />
+    <option name="totallyTimeSpent" value="236187000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
@@ -492,7 +498,8 @@
     <MESSAGE value="1. wrap all function model" />
     <MESSAGE value="wrap all function model" />
     <MESSAGE value="wrap all function model and push up to github" />
-    <option name="LAST_COMMIT_MESSAGE" value="wrap all function model and push up to github" />
+    <MESSAGE value="remove .idea" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove .idea" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
