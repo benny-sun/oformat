@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crop Image</title>
+    <link href="dist/cropper.css" rel="stylesheet">
+    <script src="dist/cropper.js"></script>
+    <script src="dist/jquery-3.2.1.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style>
+        img {
+            max-width: 100%; /* This rule is very important, please do not ignore this! */
+        }
+
+        div[class*="col-md"] {
+            margin-top: 4pt;
+        }
+
+        input[readonly].form-control{
+            background-color:white;
+            font-size: 1em;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7">
+                <img id="image" src="demo.png">
+            </div>
+            <div class="col-md-5">
+                <div class="col-md-12">
+                    <a class="btn btn-info" onclick="square()">1 : 1</a>
+                    <a class="btn btn-warning" onclick="FourThree()">4 : 3</a>
+                    <a class="btn btn-primary" onclick="SixteenNine()">16 : 9</a>
+                    <a class="btn btn-primary" onclick="NineSixteen()">9 : 16</a>
+                    <a class="btn btn-primary" onclick="free()">Free</a>
+                    <a class="btn btn-primary" onclick="rotate_front()">順時針</a>
+                    <a class="btn btn-primary" onclick="rotate_back()">逆時針</a>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">Width</span>
+                        <input id="width" type="text" class="form-control" readonly>
+                        <span class="input-group-addon">PX</span>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">Height</span>
+                        <input id="height" type="text" class="form-control" readonly>
+                        <span class="input-group-addon">PX</span>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <a class="btn btn-success" onclick="getData()">OK</a>
+                </div>
+                <div id="output_img" class="col-md-12"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        var image = document.getElementById('image');
+        var cropper = new Cropper(image, {
+            aspectRatio: 16 / 9,
+            crop: function(e) {
+//                console.log(e.detail.x);
+//                console.log(e.detail.y);
+//                console.log(e.detail.width);
+//                console.log(e.detail.height);
+//                console.log(e.detail.rotate);
+//                console.log(e.detail.scaleX);
+//                console.log(e.detail.scaleY);
+                document.getElementById('width').value = Math.round(e.detail.width);
+                document.getElementById('height').value = Math.round(e.detail.height);
+            }
+        });
+
+        function square() {
+            cropper.setAspectRatio(1);
+        }
+
+        function FourThree() {
+            cropper.setAspectRatio(4/3);
+        }
+
+        function SixteenNine() {
+            cropper.setAspectRatio(16/9);
+        }
+
+        function NineSixteen() {
+            cropper.setAspectRatio(9/16);
+        }
+
+        function free() {
+            cropper.setAspectRatio(NaN);
+        }
+
+        function rotate_front() {
+            cropper.rotate(1);
+        }
+
+        function rotate_back() {
+            cropper.rotate(-1);
+        }
+
+        var i = 0;
+        function getData() {
+
+            i += 1;
+            var obj = cropper.getData();
+            var fname = 'pic/img'+i+'.png'
+
+            $.ajax({
+                url: "crop.php",
+                method: "POST",
+                data: {obj:obj, fname: fname},
+                success: function () {
+                    console.log('Upload success');
+                    var img = document.createElement("IMG");
+                    img.setAttribute("src", fname);
+                    document.getElementById("output_img").appendChild(img);
+                },
+                error: function () {
+                    console.log('Upload error');
+                }
+            });
+
+        }
+
+        var clicks = 0;
+        function upload() {
+            clicks += 1;
+            cropper.getCroppedCanvas().toBlob(function (blob) {
+                var formData = new FormData();
+                var filename ='img'+clicks+'.jpg';
+                formData.append('croppedImage', blob, filename);
+
+                $.ajax({
+                    url: "crop.php",
+                    method: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        console.log('Upload success');
+                        var img = document.createElement("IMG");
+                        img.setAttribute("src", "pic/"+filename);
+                        document.getElementById("output_img").appendChild(img);
+                    },
+                    error: function () {
+                        console.log('Upload error');
+                    }
+                });
+
+            }, 'image/jpeg')
+        }
+    </script>
+</body>
+</html>

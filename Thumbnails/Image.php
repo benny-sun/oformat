@@ -12,7 +12,7 @@ class Image
 
     protected $width_orig, $height_orig, $ratio_orig, $image_orig, $image_new, $mime, $src, $dir;
 
-    protected $filename = 'default.jpg';
+    protected $filename = 'default';
 
     protected static $pattern = '/"|\\\\|<|>|\*|\/|:|\?|\|/';
 
@@ -79,7 +79,7 @@ class Image
         imagecopyresampled($this->image_new, $this->src, 0, 0, 0, 0, $width, $height, $this->width_orig, $this->height_orig);
 
         return $this;
-        
+
     }
 
     public function ratio_resize($width, $height)
@@ -125,14 +125,52 @@ class Image
         return $this->dir . $this->filename;
     }
 
-    public function saveJPG()
+    public function save($filename = null)
     {
-        return imagejpeg($this->image_new, $this->getFinalOutput(), '100');
+
+        $filetype = $this->getFileType($filename);
+
+        $filename = $this->getPureName($filename);
+
+        if ($filetype == 'jpg' || $filetype == 'jpeg') {
+            return $this->saveJPG($filename);
+        } elseif ($filetype == 'png') {
+            return $this->savePNG($filename);
+        } else {
+            if ($this->mime == 'image/jpeg') {
+                return $this->saveJPG($filename);
+            } elseif ($this->mime == 'image/png') {
+                return $this->savePNG($filename);
+            } else {
+                throw new Exception('data type error');
+            }
+        }
     }
 
-    public function savePNG()
+    private function getPureName($filename)
     {
-        return imagepng($this->image_new, 'small3.png');
+        $last_dot = (strrpos($filename, '.'));
+        if ($last_dot == 0) $last_dot = strlen($filename);
+        $filename = substr($filename, 0, $last_dot);
+
+        return $filename;
+    }
+
+    private function getFileType($filename)
+    {
+        return substr($filename, strrpos($filename, '.')+1);
+    }
+
+    private function saveJPG($filename = null)
+    {
+        if (! $filename) $filename = $this->filename;
+        return imagejpeg($this->image_new, $this->dir.$filename.'.jpg', '100');
+    }
+
+    private function savePNG($filename = null)
+    {
+        if (! $filename) $filename = $this->filename;
+        return imagepng($this->image_new, $this->dir.$filename.'.png');
     }
 
     function __destruct()

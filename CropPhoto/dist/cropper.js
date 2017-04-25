@@ -19,9 +19,9 @@ var DEFAULTS = {
   viewMode: 0, // 0, 1, 2, 3
 
   // Define the dragging mode of the cropper
-  dragMode: 'crop', // 'crop', 'move' or 'none'
+  dragMode: 'crop', // 'CropPhoto', 'move' or 'none'
 
-  // Define the aspect ratio of the crop box
+  // Define the aspect ratio of the CropPhoto box
   aspectRatio: NaN,
 
   // An object with the previous cropping result data
@@ -51,13 +51,13 @@ var DEFAULTS = {
   // Show the center indicator for guiding
   center: true,
 
-  // Show the white modal to highlight the crop box
+  // Show the white modal to highlight the CropPhoto box
   highlight: true,
 
   // Show the grid background
   background: true,
 
-  // Enable to crop the image automatically when initialize
+  // Enable to CropPhoto the image automatically when initialize
   autoCrop: true,
 
   // Define the percentage of automatic cropping area when initializes
@@ -84,13 +84,13 @@ var DEFAULTS = {
   // Define zoom ratio when zoom the image by wheeling mouse
   wheelZoomRatio: 0.1,
 
-  // Enable to move the crop box
+  // Enable to move the CropPhoto box
   cropBoxMovable: true,
 
-  // Enable to resize the crop box
+  // Enable to resize the CropPhoto box
   cropBoxResizable: true,
 
-  // Toggle drag mode between "crop" and "move" when click twice on the cropper
+  // Toggle drag mode between "CropPhoto" and "move" when click twice on the cropper
   toggleDragModeOnDblclick: true,
 
   // Size limitation
@@ -110,7 +110,7 @@ var DEFAULTS = {
   zoom: null
 };
 
-var TEMPLATE = '<div class="cropper-container">' + '<div class="cropper-wrap-box">' + '<div class="cropper-canvas"></div>' + '</div>' + '<div class="cropper-drag-box"></div>' + '<div class="cropper-crop-box">' + '<span class="cropper-view-box"></span>' + '<span class="cropper-dashed dashed-h"></span>' + '<span class="cropper-dashed dashed-v"></span>' + '<span class="cropper-center"></span>' + '<span class="cropper-face"></span>' + '<span class="cropper-line line-e" data-action="e"></span>' + '<span class="cropper-line line-n" data-action="n"></span>' + '<span class="cropper-line line-w" data-action="w"></span>' + '<span class="cropper-line line-s" data-action="s"></span>' + '<span class="cropper-point point-e" data-action="e"></span>' + '<span class="cropper-point point-n" data-action="n"></span>' + '<span class="cropper-point point-w" data-action="w"></span>' + '<span class="cropper-point point-s" data-action="s"></span>' + '<span class="cropper-point point-ne" data-action="ne"></span>' + '<span class="cropper-point point-nw" data-action="nw"></span>' + '<span class="cropper-point point-sw" data-action="sw"></span>' + '<span class="cropper-point point-se" data-action="se"></span>' + '</div>' + '</div>';
+var TEMPLATE = '<div class="cropper-container">' + '<div class="cropper-wrap-box">' + '<div class="cropper-canvas"></div>' + '</div>' + '<div class="cropper-drag-box"></div>' + '<div class="cropper-CropPhoto-box">' + '<span class="cropper-view-box"></span>' + '<span class="cropper-dashed dashed-h"></span>' + '<span class="cropper-dashed dashed-v"></span>' + '<span class="cropper-center"></span>' + '<span class="cropper-face"></span>' + '<span class="cropper-line line-e" data-action="e"></span>' + '<span class="cropper-line line-n" data-action="n"></span>' + '<span class="cropper-line line-w" data-action="w"></span>' + '<span class="cropper-line line-s" data-action="s"></span>' + '<span class="cropper-point point-e" data-action="e"></span>' + '<span class="cropper-point point-n" data-action="n"></span>' + '<span class="cropper-point point-w" data-action="w"></span>' + '<span class="cropper-point point-s" data-action="s"></span>' + '<span class="cropper-point point-ne" data-action="ne"></span>' + '<span class="cropper-point point-nw" data-action="nw"></span>' + '<span class="cropper-point point-sw" data-action="sw"></span>' + '<span class="cropper-point point-se" data-action="se"></span>' + '</div>' + '</div>';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -1231,11 +1231,11 @@ var render$1 = {
     self.cropBoxData = cropBoxData;
     self.limitCropBox(true, true);
 
-    // Initialize auto crop area
+    // Initialize auto CropPhoto area
     cropBoxData.width = Math.min(Math.max(cropBoxData.width, cropBoxData.minWidth), cropBoxData.maxWidth);
     cropBoxData.height = Math.min(Math.max(cropBoxData.height, cropBoxData.minHeight), cropBoxData.maxHeight);
 
-    // The width/height of auto crop area must large than "minWidth/Height"
+    // The width/height of auto CropPhoto area must large than "minWidth/Height"
     cropBoxData.width = Math.max(cropBoxData.minWidth, cropBoxData.width * autoCropArea);
     cropBoxData.height = Math.max(cropBoxData.minHeight, cropBoxData.height * autoCropArea);
     cropBoxData.oldLeft = cropBoxData.left = canvasData.left + (canvasData.width - cropBoxData.width) / 2;
@@ -1326,7 +1326,7 @@ var render$1 = {
     cropBoxData.oldTop = cropBoxData.top = Math.min(Math.max(cropBoxData.top, cropBoxData.minTop), cropBoxData.maxTop);
 
     if (options.movable && options.cropBoxMovable) {
-      // Turn to move the canvas when the crop box is equal to the container
+      // Turn to move the canvas when the CropPhoto box is equal to the container
       setData$1(self.face, 'action', cropBoxData.width === containerData.width && cropBoxData.height === containerData.height ? 'move' : 'all');
     }
 
@@ -1656,7 +1656,7 @@ var handlers = {
       return;
     }
 
-    self.setDragMode(hasClass(self.dragBox, 'cropper-crop') ? 'move' : 'crop');
+    self.setDragMode(hasClass(self.dragBox, 'cropper-CropPhoto') ? 'move' : 'crop');
   },
   wheel: function wheel(event) {
     var self = this;
@@ -1895,13 +1895,13 @@ var change$1 = {
     }
 
     switch (action) {
-      // Move crop box
+      // Move CropPhoto box
       case 'all':
         left += range.x;
         top += range.y;
         break;
 
-      // Resize crop box
+      // Resize CropPhoto box
       case ACTION_EAST:
         if (range.x >= 0 && (right >= maxWidth || aspectRatio && (top <= minTop || bottom >= maxHeight))) {
           renderable = false;
@@ -2180,7 +2180,7 @@ var change$1 = {
         renderable = false;
         break;
 
-      // Create crop box
+      // Create CropPhoto box
       case 'crop':
         if (!range.x || !range.y) {
           renderable = false;
@@ -2204,7 +2204,7 @@ var change$1 = {
           top -= height;
         }
 
-        // Show the crop box if is hidden
+        // Show the CropPhoto box if is hidden
         if (!self.cropped) {
           removeClass(self.cropBox, 'cropper-hidden');
           self.cropped = true;
@@ -2261,7 +2261,7 @@ function getPointersCenter(pointers) {
 }
 
 var methods = {
-  // Show the crop box manually
+  // Show the CropPhoto box manually
   crop: function crop() {
     var self = this;
 
@@ -2284,7 +2284,7 @@ var methods = {
   },
 
 
-  // Reset the image and crop box to their initial states
+  // Reset the image and CropPhoto box to their initial states
   reset: function reset() {
     var self = this;
 
@@ -2304,7 +2304,7 @@ var methods = {
   },
 
 
-  // Clear the crop box
+  // Clear the CropPhoto box
   clear: function clear() {
     var self = this;
 
@@ -2321,7 +2321,7 @@ var methods = {
 
       self.limitCanvas();
 
-      // Render canvas after crop box rendered
+      // Render canvas after CropPhoto box rendered
       self.renderCanvas();
 
       removeClass(self.dragBox, 'cropper-modal');
@@ -2856,7 +2856,7 @@ var methods = {
 
 
   /**
-   * Get the crop box position and size data
+   * Get the CropPhoto box position and size data
    *
    * @return {Object} data
    */
@@ -2879,7 +2879,7 @@ var methods = {
 
 
   /**
-   * Set the crop box position and size with new data
+   * Set the CropPhoto box position and size with new data
    *
    * @param {Object} data
    */
@@ -3053,7 +3053,7 @@ var methods = {
 
 
   /**
-   * Change the aspect ratio of the crop box
+   * Change the aspect ratio of the CropPhoto box
    *
    * @param {Number} aspectRatio
    */
@@ -3097,13 +3097,13 @@ var methods = {
       mode = croppable || movable ? mode : 'none';
 
       setData$1(dragBox, 'action', mode);
-      toggleClass(dragBox, 'cropper-crop', croppable);
+      toggleClass(dragBox, 'cropper-CropPhoto', croppable);
       toggleClass(dragBox, 'cropper-move', movable);
 
       if (!options.cropBoxMovable) {
-        // Sync drag mode to crop box when it is not movable
+        // Sync drag mode to CropPhoto box when it is not movable
         setData$1(face, 'action', mode);
-        toggleClass(face, 'cropper-crop', croppable);
+        toggleClass(face, 'cropper-CropPhoto', croppable);
         toggleClass(face, 'cropper-move', movable);
       }
     }
@@ -3419,7 +3419,7 @@ var Cropper = function () {
       self.cropper = cropper = getByClass(template, 'cropper-container')[0];
       self.canvas = canvas = getByClass(cropper, 'cropper-canvas')[0];
       self.dragBox = dragBox = getByClass(cropper, 'cropper-drag-box')[0];
-      self.cropBox = cropBox = getByClass(cropper, 'cropper-crop-box')[0];
+      self.cropBox = cropBox = getByClass(cropper, 'cropper-CropPhoto-box')[0];
       self.viewBox = getByClass(cropper, 'cropper-view-box')[0];
       self.face = face = getByClass(cropBox, 'cropper-face')[0];
 

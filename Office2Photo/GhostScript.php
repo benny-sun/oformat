@@ -6,7 +6,7 @@
  * Time: 下午 05:15
  */
 
-namespace GhostScript;
+//namespace GhostScript;
 
 class GhostScript
 {

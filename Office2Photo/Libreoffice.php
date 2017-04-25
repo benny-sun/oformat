@@ -6,8 +6,7 @@
  * Time: 下午 05:25
  */
 
-namespace Libreoffice;
-
+//namespace Libreoffice;
 
 class Libreoffice
 {
