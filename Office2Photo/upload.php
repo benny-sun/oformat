@@ -1,11 +1,7 @@
 <?php
+
 require 'Libreoffice.php';
 require 'GhostScript.php';
-//require 'PDF2Image.php';
-
-use Libreoffice\Libreoffice;
-use GhostScript\GhostScript;
-//use PDF2Image\PDF2Image;
 
 if (isset($_FILES['file'])) {
     $file = $_FILES['file'];
@@ -30,14 +26,14 @@ if (isset($_FILES['file'])) {
 
             $upload_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
 
-//            Libreoffice::convertToPDF($outputDir, $outputDir.$file_name);
-//            GhostScript::convertToJPG($imgDir, 72, 75, $outputDir.$pure_fname.'.pdf');
-//
-//            $format_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] - $upload_time;
-//            echo '<p>轉換完成</p>';
-//            echo '<p>總耗時 ',round($upload_time + $format_time,4),'秒</p>';
+            Libreoffice::convertToPDF($outputDir, $outputDir.$file_name);
+            GhostScript::convertToJPG($imgDir, 72, 75, $outputDir.$pure_fname.'.pdf');
+
+            $format_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] - $upload_time;
+            echo '<p>轉換完成</p>';
+            echo '<p>總耗時 ',round($upload_time + $format_time,4),'秒</p>';
             echo '<p>上傳耗時 ',round($upload_time,4),' 秒</p>';
-//            echo '<p>轉換耗時 ',round($format_time,4),' 秒</p>';
+            echo '<p>轉換耗時 ',round($format_time,4),' 秒</p>';
         }
     } else {
         echo 'ERROR';
