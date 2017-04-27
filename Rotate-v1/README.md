@@ -1,4 +1,5 @@
-# Check EXIF Orientation info in jpeg files
+# Check EXIF Orientation info in JPEG files [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+Modify JPEG files the correct orientation display when file upload to web server
 
 ## Usage
 Basic initialize and rotate the original image.
