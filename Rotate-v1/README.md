@@ -12,7 +12,7 @@ Save with customize filename.
 ```php
 Rotate::Image('photo.jpg')->save('new_name.jpg');
 ```
-## Error Code
+## Error Code Return
 If function went wrong then return error code below.
 ```
 1 => file not exists
