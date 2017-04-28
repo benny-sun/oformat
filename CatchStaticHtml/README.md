@@ -1,47 +1,53 @@
-# Thumbnails Generating [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+# Grab static html from website using cUrl [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
 ## Usage
 Initialize
 ```php
-require 'Image.php';
-$image = new Image($pic)
-```
-Resize
-```php
-$image->resize($width, $height)
-```
-Ratio resize
-```php
-$image->ratio_resize($width, $height)
+require 'HTML.php';
+$html = new HTML('http://example.com/')
 ```
 Set output directory
 ```php
-$image->setDir($folder)
+$html->setDir('2017')
+```
+Customize filename
+```php
+$html->setFileName('fname.html')
 ```
 Save file
 ```php
-$image->save($output_name)
+$html->save()
 ```
 
 ## Basic Example
 ```php
-require 'Image.php';
-$image = new Image('pic.jpg');
-$image->resize($width, $height)
-      ->setDir($folder)
-      ->save($output_name);
+require 'HTML.php';
+$html->setDir('2017')->setFileName('fname.html')->save();
 ```
 
-## Get error message
+## Batch
+Basic
 ```php
-try {
-    $image = new Image('pic.jpg');
-    $image->resize($width, $height)
-          ->setDir($folder)
-          ->save($output_name);
-} catch (Exception $e) {
-    $e->getMessage();   //  <------ this line
-}
-
+$urls = [
+    'http://example.com?id=1',
+    'http://example.com?id=2',
+    'http://example.com?id=3',
+];
+$html = new HTML($urls);
 ```
+Customize each filename
+```php
+$urls = [
+    'http://example.com?id=1',
+    'http://example.com?id=2',
+    'http://example.com?id=3',
+];
+$fname = [
+    'name1',
+    'name2',
+    'name3',
+];
+$array = [$urls, $fname];
 
+$html = new HTML($array);
+```
