@@ -34,6 +34,7 @@ $urls = [
     'http://example.com?id=3',
 ];
 $html = new HTML($urls);
+$html->save();
 ```
 Customize each filename
 ```php
@@ -50,4 +51,8 @@ $fname = [
 $array = [$urls, $fname];
 
 $html = new HTML($array);
+$html->save();
 ```
+
+## Return value
+This class funtion will return http status code, something like ```200```、```403```、```403``` and so on.
