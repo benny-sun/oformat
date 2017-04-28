@@ -17,5 +17,5 @@ If function went wrong then return error code below.
 ```
 1 => file not exists
 2 => not jpeg file
-3 => file path not exists
+3 => store path not exists
 ```
