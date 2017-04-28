@@ -9,13 +9,11 @@
 class Rotate
 {
 
-    private static $image, $mime, $filename;
-
-    private static $path = '.';
+    private static $image, $mime, $output;
 
     private static $_instance = null;
 
-    /* 1 => file not exists, 2 => not jpeg file, 3 => file path not exists */
+    /* 1 => file not exists, 2 => not jpeg file, 3 => store path not exists */
     private static $error_code = null;
 
     const orien_map = [
@@ -30,9 +28,9 @@ class Rotate
     function __construct()
     {
 
-        self::$filename = self::$image;
+        self::$output = self::$image;
 
-        if (! file_exists(self::$image)) {
+        if (!file_exists(self::$image)) {
 
             self::$error_code = 1;
 
@@ -71,7 +69,7 @@ class Rotate
     private static function getOrientation()
     {
 
-        $ifd0 = @read_exif_data(self::$image ,'IFD0' ,0);
+        $ifd0 = @read_exif_data(self::$image, 'IFD0', 0);
 
         $orientation = $ifd0['Orientation'];
 
@@ -79,11 +77,12 @@ class Rotate
 
     }
 
-    private static function getAngle() {
+    private static function getAngle()
+    {
 
         $angle = null;
 
-        if (! is_null(self::getOrientation()))
+        if (!is_null(self::getOrientation()))
             $angle = self::orien_map[self::getOrientation()];
 
         return $angle;
@@ -95,15 +94,17 @@ class Rotate
 
         $src = imagecreatefromjpeg(self::$image);
 
+        if (is_null(self::getAngle())) return;
+
         $angle = self::getAngle() * (-1);
 
         $rotate = imagerotate($src, $angle, 0);
 
-        $path = self::getPath(self::$filename);
+        $path = self::getPath(self::$output);
 
-        $filename = self::getFileName(self::$filename);
+        $filename = self::getFileName(self::$output);
 
-        imagejpeg($rotate, $path.'/'.$filename, 90);
+        imagejpeg($rotate, $path . '/' . $filename, 90);
 
         imagedestroy($rotate);
 
@@ -118,7 +119,7 @@ class Rotate
 
         $path = '.';
 
-        if (! $last_slash == 0) $path = substr($str, 0, $last_slash);
+        if (!$last_slash == 0) $path = substr($str, 0, $last_slash);
 
         return $path;
 
@@ -141,21 +142,42 @@ class Rotate
 
     }
 
-    public function save($filename = null)
+    private function setOutput($output)
     {
 
-        if (! is_null($filename)) {
+        if (! is_null($output)) {
 
-            self::$filename = $filename;
+            if (! is_dir(self::getPath($output))) {
 
-            if (! is_dir(self::getPath($filename))) self::$error_code = 3;
+                self::$error_code = 3;
+
+                return;
+
+            } else {
+
+                self::$output = $output;
+
+            }
 
         }
 
+    }
+
+    public function save($filename = null)
+    {
+
+        $this->setOutput($filename);
+
         if (is_null(self::$error_code)) {
+
             self::makeRotate();
+
+            return null;
+
         } else {
+
             return self::$error_code;
+
         }
 
     }
