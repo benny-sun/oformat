@@ -1,4 +1,4 @@
-# Grab static html using cUrl [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+# Thumbnails Generating [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
 ## Usage
 Initialize
