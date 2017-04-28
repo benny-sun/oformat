@@ -8,7 +8,7 @@ require 'Rotate.php';
 Rotate::Image('photo.jpg')->save();
 ```
 ## Customize
-Save customize filename.
+Save customize filename and path.
 ```php
 Rotate::Image('photo.jpg')->save('new_name.jpg');
 ```
