@@ -39,31 +39,45 @@ class Web
 
             switch ($browser->getBrowser()) {
                 case Browser::BROWSER_CHROME:
-                    if (in_array($browser->getVersion(), $obj->Chrome->FewMob)) {
+                    if ((!isset($obj->Chrome)) || (!$obj->Chrome->Mobile)) {
+                        $this->errCode = 1;
+                    } else if (in_array($browser->getVersion(), $obj->Chrome->FewMob)) {
                         $this->errCode = 2;
                     } else if (version_compare($browser->getVersion(), $obj->Chrome->Mobile, '<')) {
                         $this->errCode = 3;
                     }
                     break;
                 case Browser::BROWSER_IE:
-
-                    if ((!isset($obj->IE)) || ($obj->IE->Mobile)) { $this->errCode = 1; break; }
-
-                    if (in_array($browser->getVersion(), $obj->IE->FewMob)) {
+                    if ((!isset($obj->Chrome)) || (!$obj->IE->Mobile)) {
+                        $this->errCode = 1;
+                    } else if (in_array($browser->getVersion(), $obj->IE->FewMob)) {
                         $this->errCode = 2;
                     } else if (version_compare($browser->getVersion(), $obj->IE->Mobile, '<')) {
                         $this->errCode = 3;
                     }
                     break;
+                case Browser::BROWSER_EDGE:
+                    if ((!isset($obj->Chrome)) || (!$obj->Edge->Mobile)) {
+                        $this->errCode = 1;
+                    } else if (in_array($browser->getVersion(), $obj->Edge->FewMob)) {
+                        $this->errCode = 2;
+                    } else if (version_compare($browser->getVersion(), $obj->Edge->Mobile, '<')) {
+                        $this->errCode = 3;
+                    }
+                    break;
                 case Browser::BROWSER_FIREFOX:
-                    if (in_array($browser->getVersion(), $obj->Firefox->FewMob)) {
+                    if ((!isset($obj->Chrome)) || (!$obj->Firefox->Mobile)) {
+                        $this->errCode = 1;
+                    } else if (in_array($browser->getVersion(), $obj->Firefox->FewMob)) {
                         $this->errCode = 2;
                     } else if (version_compare($browser->getVersion(), $obj->Firefox->Mobile, '<')) {
                         $this->errCode = 3;
                     }
                     break;
                 case Browser::BROWSER_SAFARI:
-                    if (in_array($browser->getVersion(), $obj->Safari->FewMob)) {
+                    if ((!isset($obj->Chrome)) || (!$obj->Safari->Mobile)) {
+                        $this->errCode = 1;
+                    } else if (in_array($browser->getVersion(), $obj->Safari->FewMob)) {
                         $this->errCode = 2;
                     } else if (version_compare($browser->getVersion(), $obj->Safari->Mobile, '<')) {
                         $this->errCode = 3;
@@ -89,6 +103,15 @@ class Web
                     } else if (in_array($browser->getVersion(), $obj->IE->FewPC)) {
                         $this->errCode = 2;
                     } else if (version_compare($browser->getVersion(), $obj->IE->PC, '<')) {
+                        $this->errCode = 3;
+                    }
+                    break;
+                case Browser::BROWSER_EDGE:
+                    if ((!isset($obj->Edge)) || (!$obj->Edge->PC)) {
+                        $this->errCode = 1;
+                    } else if (in_array($browser->getVersion(), $obj->Edge->FewPC)) {
+                        $this->errCode = 2;
+                    } else if (version_compare($browser->getVersion(), $obj->Edge->PC, '<')) {
                         $this->errCode = 3;
                     }
                     break;
