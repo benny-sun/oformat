@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Regex</title>
+    <script src="validation.js"></script>
+</head>
+<body>
+    <label for="xxx">First name:</label>
+    <input id="xxx" class="validate" sgwValid="Name" type="text" ondblclick="validate(this.value,'Password', true, 8)">
+    <input class="validate" sgwValid="Tel" type="text">
+    <input class="validate" sgwValid="Url" type="text">
+    <input class="validate" sgwValid="Email" type="text">
+    <input class="validate" sgwValid="Account" type="text">
+    <input class="validate" sgwValid="Password_01" type="text" sgwMinLength="3">
+    <input class="validate" sgwValid="Mobile" type="text">
+    <input class="validate" type="text">
+    <input class="validate" sgwValid="Youtube" type="text">
+    <button onclick="ValidScan();">TEST</button>
+</body>
+</html>
