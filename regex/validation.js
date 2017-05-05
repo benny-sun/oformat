@@ -14,7 +14,7 @@ var regex = {
     Url: /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
     Youtube: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/,
     Account: /^[A-z0-9]+$/,
-    Password_01: /.*/,
+    Password_01: /.*/,  //任意字
     Password_02: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{0,}$/,   //至少 1字母 1數字
     Password_03: /"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"/   //至少 1大寫字母 1小寫字母 1數字
 };
@@ -49,9 +49,10 @@ function ValidScan() {
     for (i=0; i<count; i++) {
         index = sgwValid[i].getAttribute("sgwValid");
         min_length = sgwValid[i].getAttribute("sgwMinLength");
+        allow_empty = sgwValid[i].getAttribute("sgwAllowEmpty");
         if (index === null) { continue; }
         val = sgwValid[i].value;
-        result[index] = validate(val, index, false, min_length);
+        result[index] = validate(val, index, allow_empty, min_length);
     }
     console.log(result);
     return result;
