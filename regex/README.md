@@ -40,16 +40,16 @@ $valid = sgwValidate(id, value, code, allowEmpty, minLength);
   
 ## 驗證格式索引
 - `Name`: 驗證中英文姓名
-- `Mobile`: 驗證手機號(台)，如09XXXXXXXX、8869XXXXXXXX、+8869XXXXXXXX
-- `Tel`: 驗證中英文姓名
-- `Address`: 驗證中英文姓名
-- `Email`: 驗證中英文姓名
-- `Integer`: 驗證中英文姓名
-- `PositiveInt`: 驗證中英文姓名
-- `Numeric`: 驗證中英文姓名
-- `Url`: 驗證中英文姓名
-- `Youtube`: 驗證中英文姓名
-- `Account`: 驗證中英文姓名
-- `Password_01`: 任意字
-- `Password_02`: 至少 1字母 1數字
-- `Password_03`: 至少 1大寫字母 1小寫字母 1數字
+- `Mobile`: 驗證手機號(台)，如`09XXXXXXXX`、`8869XXXXXXXX`、`+8869XXXXXXXX`
+- `Tel`: 驗證電話號碼，如`033386233`、`03-3386233`、`03-3386233#123`
+- `Address`: 驗證地址
+- `Email`: 驗證Email
+- `Integer`: 驗證整數
+- `PositiveInt`: 驗證正整數
+- `Numeric`: 驗證數值 (包含小數點)
+- `Url`: 驗證網址
+- `Youtube`: 驗證Youtube網址
+- `Account`: 驗證帳號
+- `Password_01`: 驗證密碼，任意字
+- `Password_02`: 驗證密碼，至少 1字母 1數字
+- `Password_03`: 驗證密碼，至少 1大寫字母 1小寫字母 1數字
