@@ -14,8 +14,7 @@ $valid = sgwValidate(id, value, code, allowEmpty, minLength);
 ```
 
 ### 批次驗證
-使用SGW HTML TAG
-參數:
+使用sgw Html Tag 參數:
 - `id="example"`: 設定欄位的ID
 - `class="sgwValid"`: 初始化
 - `sgwValid="索引值"`: 填入索引值，驗證格式
@@ -38,3 +37,19 @@ $valid = sgwValidate(id, value, code, allowEmpty, minLength);
   - `1`: 未通過驗證
   - `2`: 欄位空值錯誤
   - `4`: 最小長度錯誤
+  
+## 驗證格式索引
+- `Name`: 驗證中英文姓名
+- `Mobile`: 驗證手機號(台)，如09XXXXXXXX、8869XXXXXXXX、+8869XXXXXXXX
+- `Tel`: 驗證中英文姓名
+- `Address`: 驗證中英文姓名
+- `Email`: 驗證中英文姓名
+- `Integer`: 驗證中英文姓名
+- `PositiveInt`: 驗證中英文姓名
+- `Numeric`: 驗證中英文姓名
+- `Url`: 驗證中英文姓名
+- `Youtube`: 驗證中英文姓名
+- `Account`: 驗證中英文姓名
+- `Password_01`: 任意字
+- `Password_02`: 至少 1字母 1數字
+- `Password_03`: 至少 1大寫字母 1小寫字母 1數字
