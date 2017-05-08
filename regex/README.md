@@ -15,12 +15,12 @@ $valid = sgwValidate(id, value, code, allowEmpty, minLength);
 
 ### 批次驗證
 使用SGW HTML TAG
-- 參數:
-  - `id="example"`: 設定欄位的ID
-  - `class="sgwValid"`: 初始化
-  - `sgwValid="索引值"`: 填入索引值，驗證格式
-  - `sgwMinLength="數字"`: 填入數字，欄位最小長度
-  - `sgwAllowEmpty="true"`: 填入Boolean值，是否允許空白，預設`false`
+參數:
+- `id="example"`: 設定欄位的ID
+- `class="sgwValid"`: 初始化
+- `sgwValid="索引值"`: 填入索引值，驗證格式
+- `sgwMinLength="數字"`: 填入數字，欄位最小長度
+- `sgwAllowEmpty="true"`: 填入Boolean值，是否允許空白，預設`false`
 
 ```html
 <input id="example" class="sgwValid" sgwValid="Email" sgwMinLength="3" sgwAllowEmpty="true" type="text">
