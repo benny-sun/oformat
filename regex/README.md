@@ -10,7 +10,7 @@
   - `allowEmpty`: 允許欄位為空值
   - `minLength`: 輸入的最小長度
 ```js
-$valid = sgwValid(id, value, code, allowEmpty, minLength);
+$valid = sgwValidate(id, value, code, allowEmpty, minLength);
 ```
 
 ### 批次驗證
