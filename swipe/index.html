@@ -99,12 +99,20 @@
 <!-- Initialize Swiper -->
 <script>
 
+    var _header_first, _header_end;
+
     var header = new Swiper('.sgw-header', {
         slidesPerView: 4,
         spaceBetween: 6,
         onInit: function (swiper) {
             current = swiper.activeIndex;
             jQuery($(".sgw-header .swiper-slide")[current]).addClass("red");
+            _header_first = swiper.activeIndex;
+            _header_end = swiper.activeIndex+3;
+        },
+        onSlideChangeStart: function (swiper) {
+            _header_first = swiper.activeIndex;
+            _header_end = swiper.activeIndex+3;
         }
     });
 
@@ -117,6 +125,17 @@
             _header.css("color", "");
             jQuery(_header[current]).addClass("red");
             jQuery(_header[prev]).removeClass("red");
+            console.log(_header_first);
+
+            if (current > _header_end) {
+                setTimeout( function () {
+                    header.slideTo(current);
+                }, 200);
+            }else if (current < _header_first) {
+                setTimeout( function () {
+                    header.slideTo(current);
+                }, 200);
+            }
         }
     });
 
@@ -126,6 +145,7 @@
         dest = $(this).index();
         content.slideTo(dest);
     });
+
 
 </script>
 </body>
