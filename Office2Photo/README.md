@@ -49,4 +49,22 @@ GhostScript::convertToJPG($outputDir, $dpi, 75, $inputFile);
 # apt-get install default-jre
 ```
 
-解決中文字亂碼
+### 解決中文字亂碼
+- step 1.
+  - 回到 ubuntu 進入 `/usr/share/fonts/`
+  - 創建新資料夾 `winfonts` (避免和ubuntu字型混淆)
+  - 指令碼 ```# mkdir /usr/share/fonts/winfonts```
+- step 2.
+  - 進入 windows 系統的資料夾`C:\Windows\Fonts`
+  - 將所有字體拷貝到ubuntu資料夾`/usr/share/fonts/winfonts`
+- step 3.
+  - 進入ubuntu系統
+  - 修改植入的字體訪問權限
+  - ```# cd /usr/share/fonts/winfonts```
+  - ```# chmod 744 *```
+- step 4.
+  - 產生核心字體訊息
+  - ```# apt-get install xfonts-utils```
+  - ```# mkfontscale```
+  - ```# mkfontdir```
+  - ```# fc-cache -f -v```
