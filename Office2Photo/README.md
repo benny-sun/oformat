@@ -35,3 +35,18 @@ Convert with each PDF slide and save in each JPEG file
  */
 GhostScript::convertToJPG($outputDir, $dpi, 75, $inputFile);
 ```
+
+
+## 環境設定
+安裝 Libreoffice 完整版
+```
+# apt-get install libreoffice
+```
+
+安裝 java 套件
+```
+# apt-get update
+# apt-get install default-jre
+```
+
+解決中文字亂碼
