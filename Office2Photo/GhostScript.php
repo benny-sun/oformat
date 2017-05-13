@@ -12,7 +12,7 @@ class GhostScript
 {
     public static function convert($outputDir, $formatType, $dpi, $quality, $input)
     {
-        $command = 'gs -o %spage_%%03d.jpg -sDEVICE=%s -r%s -dJPEGQ=%d %s';
+        $command = 'gs -o "%s"page_%%03d.jpg -sDEVICE=%s -r%s -dJPEGQ=%d "%s"';
         $command = sprintf($command, $outputDir, $formatType, $dpi, $quality, $input);
         system($command, $output);
 
