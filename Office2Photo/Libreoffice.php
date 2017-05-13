@@ -13,8 +13,7 @@ class Libreoffice
 
     public static function convert($formatType, $outputPath, $inputFile)
     {
-        $command = 'export HOME=/tmp
-                    soffice --headless --convert-to %s --outdir %s %s';
+        $command = 'export HOME=/tmp && soffice --headless --convert-to %s --outdir "%s" "%s"';
         $command = sprintf($command, $formatType, $outputPath, $inputFile);
         system($command, $output);
 
