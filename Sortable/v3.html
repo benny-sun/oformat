@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <title>Title</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="js/packery.pkgd.min.js"></script>
+    <script src="js/draggabilly.pkgd.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        /* force scrollbar */
+        html { overflow-y: scroll; }
+
+        body { font-family: sans-serif; }
+
+        /* ---- grid ---- */
+
+        .grid {
+            max-width: 1200px;
+            background: #DDD;
+        }
+
+        /* clear fix */
+        .grid:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        /* ---- .grid-item ---- */
+
+        .grid-sizer,
+        .grid-item {
+            width: 33.3%;
+        }
+
+        .grid-item {
+            padding-bottom: 33.33%; /* hack for proportional sizing */
+            float: left;
+            background-position: center center;
+            background-size: cover;
+        }
+
+        .grid-item--width2 {
+            width: 66.66%;
+        }
+
+        .grid-item--width3 {
+            width: 99.9%;
+        }
+
+        .grid-item--large {
+            width: 66.6%;
+            padding-bottom: 66.6%;
+        }
+
+        .packery-drop-placeholder {
+            border: 3px dotted #333;
+            background: hsla(0, 0%, 0%, 0.3);
+        }
+
+        .grid-item.is-dragging,
+        .grid-item.is-positioning-post-drag {
+            z-index: 2;
+        }
+
+        #draggable {
+            width: 10vw;
+            height: 5vh;
+            font-size: 30px;
+            color: red;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>介面拖放排序</h1>
+<!--<h3 id="currentY"></h3>-->
+<!--<button id="draggable" type="button" onclick="makeDraggable()">解鎖</button>-->
+
+
+<div class="grid">
+    <div class="grid-sizer"></div>
+    <div class="grid-item" data-item-id="1"
+         style="background-image: url(http://p1-news.yamedia.tw/MjUyNjQ3MjFuZXdz/7b4531dab6175a00.jpg);">1</div>
+    <div class="grid-item" data-item-id="2"
+         style="background-image: url(http://i2.w.yun.hjfile.cn/doc/201404/7499d92ccb8c42be8a1105aca4fa33d5.jpg);">2</div>
+    <div class="grid-item grid-item--width2" data-item-id="3"
+         style="background-image: url(http://image.cache.storm.mg/styles/smg-800x533-fp/s3/media/image/2016/07/11/20160711-110450_U3792_M173869_9c1a.png?itok=lXVdL2Mo);">3</div>
+    <div class="grid-item" data-item-id="4"
+         style="background-image: url(http://img2.a0bi.com/upload/ttq/20150301/1425192535736.jpg);">4</div>
+    <div class="grid-item grid-item--width2" data-item-id="5"
+         style="background-image: url(https://upload.wikimedia.org/wikipedia/zh/thumb/6/6f/370px-2701.jpg/300px-370px-2701.jpg);">5</div>
+    <div class="grid-item" data-item-id="6"
+         style="background-image: url(http://read.html5.qq.com/image?src=forum&q=5&r=0&imgflag=7&imageUrl=http://mmbiz.qpic.cn/mmbiz_jpg/B4YV8ycpqyL9dTwytng0HvnvukwnbM4aKbLOcpibRUW4xhQYGQWB9BuKhtxl4qz4lozZnwbnnZyfmSBWfMicHAcg/0?wx_fmt=jpeg);">6</div>
+    <div class="grid-item" data-item-id="7"
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/contrail.jpg);">7</div>
+    <div class="grid-item" data-item-id="8"
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/flight-formation.jpg);">8</div>
+    <div class="grid-item grid-item--width3" data-item-id="9"
+         style="background-image: url(http://images.900.tw/upload_file/37/content/67096428-5832-35d0-93a8-2a866f679e18.jpg);">9</div>
+    <div class="grid-item grid-item--width3" data-item-id="10"
+         style="background-image: url(http://www.teepr.com/wp-content/uploads/2015/08/28c7e067e239a0bcd975b1215dbedbb0.jpg);">10</div>
+    <div class="grid-item" data-item-id="11"
+         style="background-image: url(http://www.jparadise.com.tw/upload/302/201607201052302_0.JPG);">11</div>
+    <div class="grid-item" data-item-id="12"
+         style="background-image: url(http://pics.ettoday.net/images/1185/d1185840.jpg);">12</div>
+    <div class="grid-item" data-item-id="13"
+         style="background-image: url(http://i.gbc.tw/gb_img/4/002/577/2577654.jpg);">13</div>
+</div>
+
+<script>
+    console.log(114.54856000000001*2+114.546875)
+    // get JSON-friendly data for items positions
+    Packery.prototype.getShiftPositions = function( attrName ) {
+        attrName = attrName || 'id';
+        var _this = this;
+        return this.items.map( function( item ) {
+            return {
+                attr: item.element.getAttribute( attrName ),
+                x: item.rect.x / _this.packer.width
+            }
+        });
+    };
+
+    Packery.prototype.initShiftLayout = function( positions, attr ) {
+        if ( !positions ) {
+            // if no initial positions, run packery layout
+            this.layout();
+            return;
+        }
+        // parse string to JSON
+        if ( typeof positions === 'string' ) {
+            try {
+                positions = JSON.parse( positions );
+            } catch( error ) {
+                console.error( 'JSON parse error: ' + error );
+                this.layout();
+                return;
+            }
+        }
+
+        attr = attr || 'id'; // default to id attribute
+        this._resetLayout();
+        // set item order and horizontal position from saved positions
+        this.items = positions.map( function( itemPosition ) {
+            var selector = '[' + attr + '="' + itemPosition.attr  + '"]';
+            var itemElem = this.element.querySelector( selector );
+            var item = this.getItem( itemElem );
+            item.rect.x = Math.ceil(itemPosition.x*100000)/100000 * this.packer.width;
+            console.log(itemPosition.attr, item.rect.x,itemElem.getBoundingClientRect().width);
+            return item;
+        }, this );
+        this.shiftLayout();
+    };
+    // -----------------------------//
+
+    // init Packery
+    var grid = document.querySelector('.grid');
+    var pckry = new Packery( grid, {
+        itemSelector: '.grid-item',
+        columnWidth: '.grid-sizer',
+        percentPosition: true,
+        initLayout: false // disable initial layout
+    });
+
+    ajaxGetSort("getSort.php?v3=4", function (data) {
+        pckry.initShiftLayout( data, 'data-item-id' );
+    });
+
+    var isDrag = false;
+    function makeDraggable() {
+        // make draggable
+        if (isDrag) {
+            document.getElementById("draggable").style.color = "red";
+            document.getElementById("draggable").innerHTML = "解鎖";
+            document.getElementsByClassName("grid")[0].style.opacity = 1;
+            Off();
+        } else {
+            document.getElementById("draggable").style.color = "green";
+            document.getElementById("draggable").innerHTML = "鎖定";
+            document.getElementsByClassName("grid")[0].style.opacity = 0.7;
+            On();
+        }
+        isDrag = !isDrag;
+    }
+
+    function On() {
+        for (i=0; i < items.length; i++ ) {
+            draggies[i].enable();
+            draggies[i].bindHandles();
+        }
+    }
+
+    function Off() {
+        for (i=0; i < items.length; i++ ) {
+            draggies[i].disable();
+            draggies[i].unbindHandles();
+        }
+    }
+
+    // make draggable
+    var items = grid.querySelectorAll('.grid-item');
+    var draggies = [];
+    for ( var i=0; i < items.length; i++ ) {
+        var itemElem = items[i];
+        draggies.push(new Draggabilly( itemElem ));
+        pckry.bindDraggabillyEvents( draggies[i] );
+//        draggies[i].on( 'dragMove', function () {
+//            console.log(this.position.y);
+//        });
+//        draggies[i].disable();
+//        draggies[i].unbindHandles();
+    }
+
+
+    // save drag positions on event
+    pckry.on( 'dragItemPositioned', function() {
+        var positions = pckry.getShiftPositions('data-item-id');
+        var _items = pckry.getItemElements();
+        var _lastX = positions[positions.length-1].x;
+        var _nextX = _lastX + (Math.round(_items[_items.length-1].getBoundingClientRect().width * 1000) / 1000) / this.packer.width;
+        if (_nextX > 0.99) { _nextX = 0; }
+        // save drag positions
+        ajaxUpdateSort("updateSort.php", JSON.stringify( positions ), _nextX);
+    });
+
+    var _x = pckry.getItemElements();
+    for (i = 0; i < _x.length; i++) {
+        console.log(_x[i].innerHTML, _x[i].getBoundingClientRect().width);
+    }
+
+
+    function ajaxUpdateSort(url, sort, nextX) {
+        var xhttp = new XMLHttpRequest();
+        var params = "v3="+sort+"&nextX="+nextX;
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
+    }
+
+    function ajaxGetSort(url, success) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", url, true);
+        xhttp.send();
+        xhttp.onreadystatechange = function() {//Call a function when the state changes.
+            if(xhttp.readyState === 4 && xhttp.status === 200) {
+                success(xhttp.responseText);
+            }
+        };
+        return xhttp;
+    }
+
+</script>
+
+</body>
+</html>

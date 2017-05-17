@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="js/packery.pkgd.min.js"></script>
+    <script src="js/draggabilly.pkgd.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body { font-family: sans-serif; }
+
+        /* ---- grid ---- */
+
+        .grid {
+            background: #DDD;
+            max-width: 1200px;
+            height: 300px;
+        }
+
+        /* clear fix */
+        .grid:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        /* ---- .grid-item ---- */
+
+        .grid-item {
+            float: left;
+            width: 100px;
+            height: 100px;
+            background: #C09;
+            border: 2px solid hsla(0, 0%, 0%, 0.5);
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+        }
+
+        .grid-item--width2 { width: 200px; }
+        .grid-item--height2 { height: 200px; }
+
+        .grid-item:hover {
+            border-color: hsla(0, 0%, 100%, 0.5);
+            cursor: move;
+        }
+
+        .grid-item.is-dragging,
+        .grid-item.is-positioning-post-drag {
+            background: #C90;
+            z-index: 2;
+        }
+
+        .packery-drop-placeholder {
+            outline: 3px dashed hsla(0, 0%, 0%, 0.5);
+            outline-offset: -6px;
+            -webkit-transition: -webkit-transform 0.2s;
+            transition: transform 0.2s;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>Packery - get item elements in order after drag</h1>
+
+<div class="grid">
+    <div data-item-id="1" class="grid-item grid-item--width2"></div>
+    <div data-item-id="2" class="grid-item grid-item--height2"></div>
+    <div data-item-id="3" class="grid-item"></div>
+    <div data-item-id="4" class="grid-item"></div>
+    <div data-item-id="5" class="grid-item grid-item--width2 grid-item--height2"></div>
+    <div data-item-id="6" class="grid-item grid-item--width2"></div>
+    <div data-item-id="7" class="grid-item grid-item--width2"></div>
+    <div data-item-id="8" class="grid-item grid-item--height2"></div>
+    <div data-item-id="9" class="grid-item"></div>
+    <div data-item-id="10" class="grid-item grid-item--width2"></div>
+    <div data-item-id="11" class="grid-item grid-item--height2"></div>
+    <div data-item-id="12" class="grid-item"></div>
+    <div data-item-id="13" class="grid-item"></div>
+    <div data-item-id="14" class="grid-item grid-item--width2 grid-item--height2"></div>
+    <div data-item-id="15" class="grid-item"></div>
+    <div data-item-id="16" class="grid-item grid-item--width2"></div>
+    <div data-item-id="17" class="grid-item grid-item--height2"></div>
+    <div data-item-id="18" class="grid-item"></div>
+</div>
+
+<script>
+    // external js: packery.pkgd.js, draggabilly.pkgd.js
+
+    var $grid = $('.grid').packery({
+        itemSelector: '.grid-item',
+        columnWidth: 100
+    });
+
+    // make all grid-items draggable
+    $grid.find('.grid-item').each( function( i, gridItem ) {
+        var draggie = new Draggabilly( gridItem );
+        // bind drag events to Packery
+        $grid.packery( 'bindDraggabillyEvents', draggie );
+    });
+
+
+    // show item order after layout
+    function orderItems() {
+        var itemElems = $grid.packery('getItemElements');
+        $( itemElems ).each( function( i, itemElem ) {
+            $(itemElem).text( i + 1 );
+        });
+    }
+
+    $grid.on( 'layoutComplete', orderItems );
+    $grid.on( 'dragItemPositioned', orderItems );
+
+</script>
+
+</body>
+</html>
