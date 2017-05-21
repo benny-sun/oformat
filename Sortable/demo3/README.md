@@ -70,6 +70,16 @@ $.ajax({
 ```
 
 ## 動態載入 (Backend)
+資料庫欄位 (範例)
+```mysql
++-------------+----------+------+-----+---------+----------------+
+| Field       | Type     | Null | Key | Default | Extra          |
++-------------+----------+------+-----+---------+----------------+
+| id          | int(11)  | NO   | PRI |         | auto_increment |
+| data        | char(35) | YES  |     | NULL    |                |
+| ord         | int(11)  | YES  |     | NULL    |                |
++-------------+----------+------+-----+---------+----------------+
+```
 取得資料行 (getRecords.php)
 ```php
 require_once '../lib/Database.php';
