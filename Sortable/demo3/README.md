@@ -38,13 +38,10 @@ Sortable.create(listWithHandle, {
 ## 動態載入
 偵測卷軸滾動到最底
 ```js
-var isDoing = false;
 $(window).scroll(function() {
     if(Math.ceil(window.pageYOffset)+window.innerHeight >= document.body.scrollHeight) {
-        if (! isDoing) {
-            $('.ajax-loader').show();
-            loadMoreData();
-        }
-    }
+        // 到底之後做的事
+    }
 });
 ```
+
