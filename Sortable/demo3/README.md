@@ -65,5 +65,17 @@ $.ajax({
 
 ## 動態載入 (Backend)
 取得資料庫資料
+```php
+require_once '../lib/Database.php';
 
+$start = $_GET('start');
+
+$range = $_GET('range');
+
+$db = new Database();
+
+$rows = $db->getRows("SELECT * FROM table LIMIT $start, $range");
+
+$db->Disconnect();
+```
 
