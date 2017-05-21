@@ -5,7 +5,7 @@
   - bootstrap.min.css 3.3.1
 - JS
   - Sortable.js
-  - jquery.min.js
+  - jquery.min.js
   
 ## 拖放排序
 範例
