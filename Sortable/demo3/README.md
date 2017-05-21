@@ -10,29 +10,34 @@
 ## 拖放排序
 範例
 ```html
-<div id="listWithHandle" class="list-group">
-    <div data-id="1" class="list-group-item">
-        <span class="badge">14</span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-        Drag me by the handle
-    </div>
-    <div data-id="2" class="list-group-item">
-        <span class="badge">2</span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-        You can also select text
-    </div>
-    <div data-id="3" class="list-group-item">
-        <span class="badge">1</span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-        Best of both worlds!
-    </div>
-</div>
-```
-```js
-Sortable.create(listWithHandle, {
-    handle: '.glyphicon-move',
-    animation: 150
-});
+<html>
+...
+<body>
+  <div id="listWithHandle" class="list-group">
+      <div data-id="1" class="list-group-item">
+          <span class="badge">14</span>
+          <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+          Drag me by the handle
+      </div>
+      <div data-id="2" class="list-group-item">
+          <span class="badge">2</span>
+          <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+          You can also select text
+      </div>
+      <div data-id="3" class="list-group-item">
+          <span class="badge">1</span>
+          <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+          Best of both worlds!
+      </div>
+  </div>
+  <script>
+    Sortable.create(listWithHandle, {
+        handle: '.glyphicon-move',
+        animation: 150
+    });
+  </script>
+</body>
+</html>
 ```
 
 ## 動態載入 (Frontend)
