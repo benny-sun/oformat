@@ -45,3 +45,19 @@ $(window).scroll(function() {
 });
 ```
 
+卷軸到底後，向後端請求資料
+```js
+$.ajax({
+    url: "接收資料的後台網址",
+    method: "GET",
+    beforeSend: function () {
+        // 顯示loading icon
+    },
+    success: function (data) {
+        // 成功請求後台資料
+    },
+    error: function (jqXHR) {
+        // 錯誤處理
+    }
+});
+```
