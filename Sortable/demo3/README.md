@@ -70,7 +70,7 @@ $.ajax({
 ```
 
 ## 動態載入 (Backend)
-取得資料庫資料 (getRecords.php)
+取得資料行 (getRecords.php)
 ```php
 require_once '../lib/Database.php';
 
@@ -84,8 +84,13 @@ $rows = $db->getRows("SELECT * FROM table LIMIT $start, $range");
 
 $db->Disconnect();
 
+// 輸出layout
 foreach ($rows as $key => $row) {
-    // 輸出layout
+    echo '<div data-id="',$row['id'],'" class="list-group-item">';
+    echo '    <span class="badge">',$row['id'],'</span>';
+    echo '    <span class="glyphicon glyphicon-move" aria-hidden="true"></span>';
+    echo '    &nbsp;&nbsp;&nbsp;&nbsp;',$row['data'];
+    echo '</div>';
 }
 ```
 
