@@ -52,7 +52,7 @@ $(window).scroll(function() {
 卷軸到底後，向後端請求資料
 ```js
 start = 1;    // 起始值
-range = 10;   // 每次得到的筆數
+range = 10;   // 每次取得的筆數範圍
 $.ajax({
     url: "接收資料的後台網址",
     method: "GET",
@@ -74,9 +74,9 @@ $.ajax({
 ```php
 require_once '../lib/Database.php';
 
-$start = $_GET('start');
+$start = $_GET('start');  // 取得ajax過來的起始值
 
-$range = $_GET('range');
+$range = $_GET('range');  // 取得ajax過來的筆數範圍
 
 $db = new Database();
 
