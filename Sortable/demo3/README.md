@@ -58,6 +58,7 @@ var demo = Sortable.create(listWithHandle, {
 });
 ```
 ```php
+// refreshSort.php
 if (isset($_POST['sort'])) {
     // 處理排序存入db
 }
