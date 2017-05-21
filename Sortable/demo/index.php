@@ -10,10 +10,25 @@
     <style>
         .chosen { color: red;}
         div {
-            font-size: 200%;
+            font-size: 180%;
         }
         .badge {
             font-size: 50%;
+        }
+        .glyphicon-move {
+            touch-action: none;
+        }
+        @keyframes blink {
+            50% { color: #ff0000; border-color: #ff0000; }
+        }
+        .border-blink { /*or other element you want*/
+            animation: blink .3s step-end infinite alternate;
+        }
+        @keyframes bg-blink {
+            50% { background-color: #ff0000; }
+        }
+        .bgcolor-blink {
+            animation: bg-blink .3s step-end infinite alternate;
         }
     </style>
 </head>
@@ -21,17 +36,18 @@
 
 <?php
 
-$x = include('test1.php');
-echo $x;
-
 require_once 'lib/Database.php';
 require_once 'lib/utility.php';
 
 $db = new Database();
 
-$rows = $db->getRows('SELECT * FROM demo LIMIT 18');
+$sort = $db->getRow('SELECT sort FROM sortable WHERE id = 6');
 
-$last_id = $rows[sizeof($rows)-1]['id'];
+$sort = $sort['sort'];
+
+$sort = getSortPart($sort, 0, 10);
+
+$rows = $db->getRows('SELECT * FROM demo WHERE id IN ( '.$sort.' ) ORDER BY FIELD(id,'.$sort.')');
 
 $db->Disconnect();
 
@@ -65,31 +81,39 @@ echo '</div>';
                 data: { sort: JSON.stringify(demo.toArray()), id: 6 },
                 success: function () {
                     console.log("order change");
+
                 }
             });
+        },
+        onEnd: function (evt) {
+            evt.item.className += " border-blink";
+            evt.item.childNodes[1].className += " bgcolor-blink";
+            setTimeout(function () {
+                evt.item.classList.remove("border-blink");
+                evt.item.childNodes[1].classList.remove("bgcolor-blink");
+            },1000);
         }
-    });
-
-    $(document).ready(function () {
-        $.get("ajax/getSort.php?id=6", function (data) {
-            demo.sort(JSON.parse(data));
-        });
     });
 
     var isDoing = false;
     $(window).scroll(function() {
-        if(Math.ceil($(window).scrollTop()) + $(window).height() >= $(document).height()) {
-            var last_id = $(".list-group-item:last").attr("data-id");
+//        var a = window.pageYOffset+window.innerHeight +" , "+document.body.scrollHeight;
+//        var spans = document.getElementsByClassName( 'badge' );
+//        [].slice.call( spans ).forEach(function ( sp ) {
+//            sp.innerHTML = a;
+//        });
+        if(window.pageYOffset+window.innerHeight >= document.body.scrollHeight) {
             if (! isDoing) {
-                loadMoreData(last_id);
+                $('.ajax-load').show();
+                loadMoreData();
             }
         }
     });
 
-    function loadMoreData(last_id) {
-
+    var start = document.getElementsByClassName("list-group-item").length;
+    function loadMoreData() {
         $.ajax({
-            url: "ajax/getRecords.php?last_id="+last_id,
+            url: "ajax/getRecords.php?start="+start,
             method: "GET",
             beforeSend: function () {
                 isDoing = true;
@@ -99,8 +123,9 @@ echo '</div>';
                 setTimeout(function () {
                     isDoing = false;
                     $('.ajax-load').hide();
-                    console.log(data);
+                    console.log(start);
                     $("#listWithHandle").append(data);
+                    start += 10;
                 },2000);
             },
             error: function (jqXHR, exception) {

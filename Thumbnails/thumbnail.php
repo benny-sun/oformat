@@ -89,5 +89,62 @@ function create_thumbnail($path, $save, $width, $height) {
 //// 輸出
 //imagejpeg($image_p, 'small3.jpg', 100);
 //=========================================
-require 'Image.php';
-$image = new Image('53.jpg');
+
+///**
+// * 初始化
+// * @param  string  $pic
+// */
+//$image = new Image($pic);
+//
+///**
+// * 設定任意寬高(不按比例)
+// * @param  int|float  $width
+// * @param  int|float  $height
+// */
+//$image->resize($width, $height)
+//
+///**
+// * 設定寬高(按比例)
+// * @param  int|float  $width
+// * @param  int|float  $height
+// */
+//$image->ratio_resize($width, $height)
+//
+///**
+// * 指定輸出資料夾
+// * @param  string  $folder
+// */
+//$image->setDir($folder)
+//
+///**
+// * 存檔
+// * @param  string  $output_name
+// */
+//$image->save($output_name)
+//
+///**
+// * 基本範例
+// *
+// * @param  int|float  $width
+// * @param  int|float  $height
+// * @param  string  $folder
+// * @param  string  $output_name
+// * @return Exception $e
+// */
+//require 'Image.php';
+//$image = new Image('pic.jpg');
+//$image->resize($width, $height)
+//      ->setDir($folder)
+//      ->save($output_name);
+
+/**
+ * 取得錯誤回傳值
+ */
+try {
+    $image = new Image('pic.jpg');
+    $image->resize($width, $height)
+        ->setDir($folder)
+        ->save($output_name);
+} catch (Exception $e) {
+    $e->getMessage();   //  <---------- this line
+}

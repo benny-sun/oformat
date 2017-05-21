@@ -1,15 +1,15 @@
 {
 
   "IE": {
-    "PC": "8",
-    "Mobile": "8",
+    "PC": "",
+    "Mobile": "",
     "FewPC": [],
     "FewMob": []
   },
 
   "Edge": {
-    "PC": "8",
-    "Mobile": "8",
+    "PC": "",
+    "Mobile": "",
     "FewPC": [],
     "FewMob": []
   },
@@ -17,20 +17,20 @@
   "Chrome": {
     "PC": "40",
     "Mobile": "50",
-    "FewPC": ["58.0.3029.81"],
+    "FewPC": [],
     "FewMob": []
   },
 
   "Firefox": {
-    "PC": "50",
-    "Mobile": "50",
+    "PC": "",
+    "Mobile": "",
     "FewPC": [],
     "FewMob": []
   },
 
   "Safari": {
-    "PC": "6",
-    "Mobile": "5",
+    "PC": "",
+    "Mobile": "",
     "FewPC": [],
     "FewMob": []
   }

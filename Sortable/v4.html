@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
     <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
     <script src="js/packery.pkgd.min.js"></script>
     <script src="js/draggabilly.pkgd.min.js"></script>
-
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
     <style>
         * { box-sizing: border-box; }
 
@@ -19,7 +18,6 @@
         /* ---- grid ---- */
 
         .grid {
-            max-width: 1200px;
             background: #DDD;
         }
 
@@ -31,26 +29,23 @@
         }
 
         /* ---- .grid-item ---- */
-
         .grid-sizer,
         .grid-item {
-            width: 25%;
+            width: 33.33%;
+        }
+
+        .grid-item2 {
+            width: 66.66%;
         }
 
         .grid-item {
-            padding-bottom: 25%; /* hack for proportional sizing */
             float: left;
-            background-position: center center;
-            background-size: cover;
         }
 
-        .grid-item--width2 {
-            width: 50%;
-        }
-
-        .grid-item--large {
-            width: 50%;
-            padding-bottom: 50%;
+        .grid-item img {
+            display: block;
+            max-width: 100%;
+            width: 100%;
         }
 
         .packery-drop-placeholder {
@@ -66,34 +61,42 @@
     </style>
 </head>
 <body>
-<h1>Packery - save &amp; restore drag position, vanilla JS</h1>
+<h1>Packery - imagesLoaded progress</h1>
 
 <div class="grid">
-    <div class="grid-sizer"></div>
-    <div class="grid-item grid-item--large" data-item-id="1"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/orange-tree.jpg);"></div>
-    <div class="grid-item" data-item-id="2"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/submerged.jpg);"></div>
-    <div class="grid-item" data-item-id="3"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg);"></div>
-    <div class="grid-item grid-item--width2" data-item-id="4"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/one-world-trade.jpg);"></div>
-    <div class="grid-item" data-item-id="5"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/drizzle.jpg);"></div>
-    <div class="grid-item grid-item--width2" data-item-id="6"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/golden-hour.jpg);"></div>
-    <div class="grid-item" data-item-id="7"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/cat-nose.jpg);"></div>
-    <div class="grid-item" data-item-id="8"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/contrail.jpg);"></div>
-    <div class="grid-item" data-item-id="9"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/flight-formation.jpg);"></div>
+    <div class="grid-item">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/orange-tree.jpg" />
+    </div>
+    <div class="grid-item grid-item2">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/submerged.jpg" />
+    </div>
+    <div class="grid-item">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg" />
+    </div>
+    <div class="grid-item">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/one-world-trade.jpg" />
+    </div>
+    <div class="grid-item">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/drizzle.jpg" />
+    </div>
+    <div class="grid-item grid-item2">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/cat-nose.jpg" />
+    </div>
+    <div class="grid-item">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/contrail.jpg" />
+    </div>
+    <div class="grid-item">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/golden-hour.jpg" />
+    </div>
+    <div class="grid-item">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/flight-formation.jpg" />
+    </div>
 </div>
 
 <script>
-    // external js: packery.pkgd.js, draggabilly.pkgd.js
 
-    // add Packery.prototype methods
+    var cw = $('.grid-item img').width();
+    $('.grid-item img').css({'height':cw+'px'});
 
     // get JSON-friendly data for items positions
     Packery.prototype.getShiftPositions = function( attrName ) {
@@ -137,21 +140,33 @@
         this.shiftLayout();
     };
 
-    // -----------------------------//
+//    // init Packery
+//    var $grid = $('.grid').packery({
+//        itemSelector: '.grid-item',
+//        percentPosition: true
+//    });
+//    // layout Packery after each image loads
+//    $grid.imagesLoaded().progress( function() {
+//        $grid.packery();
+//    });
+//    $('#container').imagesLoaded( function() {
+//        $grid.packery();
+//    });
+//
+//    // make all grid-items draggable
+//    $grid.find('.grid-item').each( function( i, gridItem ) {
+//        var draggie = new Draggabilly( gridItem );
+//        // bind drag events to Packery
+//        $grid.packery( 'bindDraggabillyEvents', draggie );
+//    });
+
 
     // init Packery
     var grid = document.querySelector('.grid');
     var pckry = new Packery( grid, {
         itemSelector: '.grid-item',
-        columnWidth: '.grid-sizer',
         percentPosition: true,
-        initLayout: false, // disable initial layout
     });
-
-    // get saved dragged positions
-    var initPositions = localStorage.getItem('dragPositions');
-    // init layout with saved positions
-    pckry.initShiftLayout( initPositions, 'data-item-id' );
 
     // make draggable
     var items = grid.querySelectorAll('.grid-item');
@@ -161,14 +176,7 @@
         pckry.bindDraggabillyEvents( draggie );
     }
 
-    // save drag positions on event
-    pckry.on( 'dragItemPositioned', function() {
-        var positions = pckry.getShiftPositions('data-item-id');
-        // save drag positions
-        localStorage.setItem( 'dragPositions', JSON.stringify( positions ) );
-    });
 
 </script>
-
 </body>
 </html>

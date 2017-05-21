@@ -5,19 +5,26 @@
  * Date: 2017/5/18
  * Time: 下午 03:09
  */
-
+require_once '../lib/utility.php';
 require_once '../lib/Database.php';
-if (! isset($_GET['last_id'])) {
+
+if (! isset($_GET['start'])) {
     echo 'no id set';
     http_response_code(510);
     exit();
 }
 
-$id = $_GET['last_id'];
+$start = $_GET['start'];
 
 $db = new Database();
 
-$rows = $db->getRows("SELECT * FROM demo WHERE id > ? LIMIT 10", [$id]);
+$orig_sort = $db->getRow('SELECT sort FROM sortable WHERE id = 6');
+
+$orig_sort = $orig_sort['sort'];
+
+$orig_sort = getSortPart($orig_sort, $start, 10);
+
+$rows = $db->getRows('SELECT * FROM demo WHERE id IN ( '.$orig_sort.' ) ORDER BY FIELD(id,'.$orig_sort.')');
 
 $db->Disconnect();
 

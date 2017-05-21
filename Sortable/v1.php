@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>JS Bin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
@@ -14,7 +15,7 @@
     <style>
         .chosen { color: red;}
         div {
-            font-size: 300%;
+            font-size: 200%;
         }
         .badge {
             font-size: 50%;
@@ -24,21 +25,17 @@
 <body>
 <!-- List with handle -->
 <div id="listWithHandle" class="list-group">
-    <div data-id="1" class="list-group-item">
-        <span class="badge">1</span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-        大雄
-    </div>
-    <div data-id="2" class="list-group-item">
-        <span class="badge">2</span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-        胖虎
-    </div>
-    <div data-id="3" class="list-group-item">
-        <span class="badge">3</span>
-        <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-        小夫
-    </div>
+    <?php
+
+    for ($i = 0; $i < 25; $i++) {
+        echo '<div data-id="',$i,'" class="list-group-item">';
+        echo '    <span class="badge">',$i,'</span>';
+        echo '    <span class="glyphicon glyphicon-move" aria-hidden="true"></span>';
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;',$i;
+        echo '</div>';
+    }
+
+    ?>
 </div>
 
 <script>

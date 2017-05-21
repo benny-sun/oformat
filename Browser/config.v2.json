@@ -1,0 +1,55 @@
+{
+  "PC": {
+    "IE": {
+      "version": "",
+      "Few": []
+    },
+
+    "Edge": {
+      "version": "",
+      "Few": []
+    },
+
+    "Chrome": {
+      "version": "",
+      "Few": []
+    },
+
+    "Firefox": {
+      "version": "",
+      "Few": []
+    },
+
+    "Safari": {
+      "version": "",
+      "Few": []
+    }
+  },
+
+  "Mobile": {
+    "IE": {
+      "version": "",
+      "Few": []
+    },
+
+    "Edge": {
+      "version": "",
+      "Few": []
+    },
+
+    "Chrome": {
+      "version": "",
+      "Few": []
+    },
+
+    "Firefox": {
+      "version": "",
+      "Few": []
+    },
+
+    "Safari": {
+      "version": "",
+      "Few": []
+    }
+  }
+}

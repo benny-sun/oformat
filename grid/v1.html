@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="gridstack.js-develop/dist/gridstack.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+            integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+            crossorigin="anonymous"></script>
+    <script src="gridstack.js-develop/dist/jquery.ui.touch-punch.min.js"></script>
+    <script src="gridstack.js-develop/dist/gridstack.js"></script>
+    <script src="gridstack.js-develop/dist/gridstack.jQueryUI.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+
+    <style type="text/css">
+        .grid-stack {
+            background: lightgoldenrodyellow;
+        }
+
+        .grid-stack-item-content {
+            color: #2c3e50;
+            text-align: center;
+            background-color: #18bc9c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <h1>Serialization demo</h1>
+
+    <div>
+        <a class="btn btn-default" id="save-grid" href="#">Save Grid</a>
+        <a class="btn btn-default" id="load-grid" href="#">Load Grid</a>
+        <a class="btn btn-default" id="clear-grid" href="#">Clear Grid</a>
+    </div>
+
+    <br/>
+
+    <div class="row">
+        <div class="grid-stack">
+        </div>
+        <hr/>
+        <textarea id="saved-data" cols="100" rows="20" readonly="readonly"></textarea>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var options = {
+            disableResize: true,
+            animate: true,
+            cellHeight: 100
+        };
+        $('.grid-stack').gridstack(options);
+
+        new function () {
+            this.serializedData = [
+                {x: 4, y: 0, width: 8, height: 4},
+                {x: 0, y: 8, width: 12, height: 4},
+                {x: 0, y: 12, width: 4, height: 4},
+                {x: 8, y: 12, width: 4, height: 4},
+                {x: 4, y: 12, width: 4, height: 4},
+                {x: 0, y: 4, width: 4, height: 4},
+                {x: 8, y: 4, width: 4, height: 4},
+                {x: 4, y: 4, width: 4, height: 4},
+                {x: 0, y: 0, width: 4, height: 4}
+            ];
+
+            this.grid = $('.grid-stack').data('gridstack');
+
+            this.loadGrid = function () {
+                this.grid.removeAll();
+                var items = GridStackUI.Utils.sort(this.serializedData);
+                console.log(items);
+                _.each(items, function (node) {
+                    this.grid.addWidget($('<div><div class="grid-stack-item-content" /><div/>'),
+                        node.x, node.y, node.width, node.height);
+                }, this);
+                return false;
+            }.bind(this);
+
+            this.saveGrid = function () {
+                this.serializedData = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
+                    el = $(el);
+                    var node = el.data('_gridstack_node');
+                    return {
+                        x: node.x,
+                        y: node.y,
+                        width: node.width,
+                        height: node.height,
+                        disableResize: true
+                    };
+                }, this);
+                console.log(this.serializedData);
+                $('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
+                return false;
+            }.bind(this);
+
+            this.clearGrid = function () {
+                this.grid.removeAll();
+                return false;
+            }.bind(this);
+
+            $('#save-grid').click(this.saveGrid);
+            $('#load-grid').click(this.loadGrid);
+            $('#clear-grid').click(this.clearGrid);
+
+            this.loadGrid();
+        };
+
+
+    });
+</script>
+
+</body>
+</html>

@@ -20,7 +20,6 @@
 
         .grid {
             max-width: 1200px;
-            /*padding-right: 1%;*/
             background: #DDD;
         }
 
@@ -33,9 +32,12 @@
 
         /* ---- .grid-item ---- */
 
-        .grid-sizer,
+        .grid-sizer {
+            width: 33.2888%;
+        }
+
         .grid-item {
-            width: 33%;
+            width: 33.3%;
         }
 
         .grid-item {
@@ -46,11 +48,11 @@
         }
 
         .grid-item--width2 {
-            width: 66%;
+            width: 66.6%;
         }
 
         .grid-item--large {
-            width: 99%;
+            width: 99.9%;
             padding-bottom: 50%;
         }
 
@@ -72,23 +74,23 @@
 <div class="grid">
     <div class="grid-sizer"></div>
     <div class="grid-item grid-item--large" data-item-id="1"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/orange-tree.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/orange-tree.jpg);">1</div>
     <div class="grid-item" data-item-id="2"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/submerged.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/submerged.jpg);">2</div>
     <div class="grid-item" data-item-id="3"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg);">3</div>
     <div class="grid-item grid-item--width2" data-item-id="4"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/one-world-trade.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/one-world-trade.jpg);">4</div>
     <div class="grid-item" data-item-id="5"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/drizzle.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/drizzle.jpg);">5</div>
     <div class="grid-item grid-item--width2" data-item-id="6"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/golden-hour.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/golden-hour.jpg);">6</div>
     <div class="grid-item" data-item-id="7"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/cat-nose.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/cat-nose.jpg);">7</div>
     <div class="grid-item" data-item-id="8"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/contrail.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/contrail.jpg);">8</div>
     <div class="grid-item" data-item-id="9"
-         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/flight-formation.jpg);"></div>
+         style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/flight-formation.jpg);">9</div>
 </div>
 
 <script>
@@ -103,7 +105,7 @@
         return this.items.map( function( item ) {
             return {
                 attr: item.element.getAttribute( attrName ),
-                x: item.rect.x / _this.packer.width
+                x: Math.floor(item.rect.x / _this.packer.width * 100000) / 100000
             }
         });
     };
@@ -129,10 +131,11 @@
         this._resetLayout();
         // set item order and horizontal position from saved positions
         this.items = positions.map( function( itemPosition ) {
-            var selector = '[' + attr + '="' + itemPosition.attr  + '"]'
+            var selector = '[' + attr + '="' + itemPosition.attr  + '"]';
             var itemElem = this.element.querySelector( selector );
             var item = this.getItem( itemElem );
-            item.rect.x = itemPosition.x * this.packer.width;
+            item.rect.x = Math.ceil(itemPosition.x * this.packer.width);
+//            console.log(itemPosition.attr, "x%:"+itemPosition.x, "x:"+item.rect.x, "xwidth:"+itemElem.offsetWidth);
             return item;
         }, this );
         this.shiftLayout();
@@ -146,7 +149,8 @@
         itemSelector: '.grid-item',
         columnWidth: '.grid-sizer',
         percentPosition: true,
-        initLayout: false, // disable initial layout
+        gutter: 0,
+        initLayout: false // disable initial layout
     });
 
     // get saved dragged positions
@@ -166,28 +170,9 @@
     pckry.on( 'dragItemPositioned', function() {
         var positions = pckry.getShiftPositions('data-item-id');
         // save drag positions
+        console.log(JSON.stringify( positions ));
         localStorage.setItem( 'dragPositions', JSON.stringify( positions ) );
     });
-
-    function ajaxUpdateSort(url, sort, nextX) {
-        var xhttp = new XMLHttpRequest();
-        var params = "v3="+sort+"&nextX="+nextX;
-        xhttp.open("POST", url, true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send(params);
-    }
-
-    function ajaxGetSort(url, success) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", url, true);
-        xhttp.send();
-        xhttp.onreadystatechange = function() {//Call a function when the state changes.
-            if(xhttp.readyState === 4 && xhttp.status === 200) {
-                success(xhttp.responseText);
-            }
-        };
-        return xhttp;
-    }
 
 </script>
 

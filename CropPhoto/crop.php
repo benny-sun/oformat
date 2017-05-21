@@ -6,6 +6,7 @@
  * Time: 下午 05:03
  */
 
+/* use cropper.getCroppedCanvas().toBlob */
 //if (isset($_FILES)) {
 //    echo '<pre>';
 //    print_r($_FILES);
@@ -18,6 +19,7 @@
 //    }
 //}
 
+/* use cropper.getData() */
 if (isset($_POST['obj']) && isset($_POST['fname'])) {
 
     echo '<pre>';
@@ -31,7 +33,7 @@ if (isset($_POST['obj']) && isset($_POST['fname'])) {
 
     $img1 = imagecreatefrompng('demo.png');
     $new_image = imagecreatetruecolor($_POST['obj']['width'], $_POST['obj']['height']);
-    $rotate = imagerotate($img1, $_POST['obj']['rotate']*(-1), 0);
+    $rotate = imagerotate($img1, $_POST['obj']['RotateTest']*(-1), 0);
     imagecopyresampled($new_image, $rotate, 0, 0, $_POST['obj']['x'], $_POST['obj']['y'], $_POST['obj']['width'], $_POST['obj']['height'], $_POST['obj']['width'], $_POST['obj']['height']);
 //    $img2 = imagecrop($img1, $array);
 
@@ -39,5 +41,3 @@ if (isset($_POST['obj']) && isset($_POST['fname'])) {
         imagepng($new_image, $fname);
     }
 }
-
-

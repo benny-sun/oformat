@@ -26,8 +26,8 @@ if (isset($_FILES['file'])) {
 
             $upload_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
 
-            echo Libreoffice::convertToPDF($outputDir, $outputDir.$file_name);
-            GhostScript::convertToJPG($imgDir, 72, 75, $outputDir.$pure_fname.'.pdf');
+            echo Libreoffice::convertToJPG($outputDir, $outputDir.$file_name);
+//            GhostScript::convertToJPG($imgDir, 72, 75, $outputDir.$pure_fname.'.pdf');
 
             $format_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] - $upload_time;
             echo '<p>轉換完成</p>';

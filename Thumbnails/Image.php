@@ -111,22 +111,10 @@ class Image
         return $this;
     }
 
-    public function setName($name)
-    {
-
-        $this->filename = preg_replace(static::$pattern, ' ', $name);
-
-        return $this;
-
-    }
-
-    private function getFinalOutput()
-    {
-        return $this->dir . $this->filename;
-    }
-
     public function save($filename = null)
     {
+
+        if (! $filename) throw new Exception('You should put output filename in final <strong>save()</strong> function');
 
         $filetype = $this->getFileType($filename);
 
@@ -149,8 +137,13 @@ class Image
 
     private function getPureName($filename)
     {
+
+        $filename = preg_replace(static::$pattern, ' ', $filename);
+
         $last_dot = (strrpos($filename, '.'));
+
         if ($last_dot == 0) $last_dot = strlen($filename);
+
         $filename = substr($filename, 0, $last_dot);
 
         return $filename;
@@ -163,13 +156,11 @@ class Image
 
     private function saveJPG($filename = null)
     {
-        if (! $filename) $filename = $this->filename;
         return imagejpeg($this->image_new, $this->dir.$filename.'.jpg', '100');
     }
 
     private function savePNG($filename = null)
     {
-        if (! $filename) $filename = $this->filename;
         return imagepng($this->image_new, $this->dir.$filename.'.png');
     }
 

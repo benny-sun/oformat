@@ -6,16 +6,16 @@
     <script src="validation.js"></script>
 </head>
 <body>
-    <label for="xxx">First name:</label>
-    <input id="xxx" class="validate" sgwValid="Name" type="text" ondblclick="validate(this.value,'Password', true, 8)">
-    <input class="validate" sgwValid="Tel" type="text">
-    <input class="validate" sgwValid="Url" type="text">
-    <input class="validate" sgwValid="Email" type="text">
-    <input class="validate" sgwValid="Account" type="text">
-    <input class="validate" sgwValid="Password_01" sgwMinLength="3" sgwAllowEmpty="true" type="text" >
-    <input class="validate" sgwValid="Mobile" type="text">
-    <input class="validate" type="text">
-    <input class="validate" sgwValid="Youtube" sgwAllowEmpty="true" type="text">
+    <input class="sgwValid" sgwValid="Name" type="text">
+    <input class="sgwValid" sgwValid="Tel"  type="text" ondblclick="console.log(sgwValidate('tele',this.value,'Tel'))">
+    <input class="sgwValid" sgwValid="Url" type="text">
+    <input class="sgwValid" sgwValid="Email" type="text">
+    <input class="sgwValid" sgwValid="Email" type="text">
+    <input class="sgwValid" sgwValid="Account" type="text">
+    <input class="sgwValid" sgwValid="Password_01" sgwMinLength="3" sgwAllowEmpty="true" type="text" >
+    <input class="sgwValid" sgwValid="Mobile" type="text">
+    <input class="sgwValid" type="text">
+    <input class="sgwValid" sgwValid="Youtube" sgwAllowEmpty="true" type="text">
     <button onclick="ValidScan();">TEST</button>
 </body>
 </html>

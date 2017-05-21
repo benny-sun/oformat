@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
     <title>Title</title>
     <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="js/packery.pkgd.min.js"></script>
+    <script src="js/packery.pkgd.js"></script>
+    <!--<script src="js/packery.pkgd.min.js"></script>-->
     <script src="js/draggabilly.pkgd.min.js"></script>
 
     <style>
@@ -38,14 +38,14 @@
         }
 
         .grid-item {
-            padding-bottom: 33.33%; /* hack for proportional sizing */
+            padding-bottom: 33%; /* hack for proportional sizing */
             float: left;
             background-position: center center;
             background-size: cover;
         }
 
         .grid-item--width2 {
-            width: 66.66%;
+            width: 66.6%;
         }
 
         .grid-item--width3 {
@@ -80,11 +80,11 @@
 <body>
 
 <h1>介面拖放排序</h1>
-<!--<h3 id="currentY"></h3>-->
+<h3 id="currentY"></h3>
 <!--<button id="draggable" type="button" onclick="makeDraggable()">解鎖</button>-->
 
 
-<div class="grid">
+<div id="grid" class="grid">
     <div class="grid-sizer"></div>
     <div class="grid-item" data-item-id="1"
          style="background-image: url(http://p1-news.yamedia.tw/MjUyNjQ3MjFuZXdz/7b4531dab6175a00.jpg);">1</div>
@@ -115,7 +115,7 @@
 </div>
 
 <script>
-    console.log(114.54856000000001*2+114.546875)
+    document.getElementById("currentY").innerHTML = document.getElementById("currentY").offsetWidth;
     // get JSON-friendly data for items positions
     Packery.prototype.getShiftPositions = function( attrName ) {
         attrName = attrName || 'id';
@@ -123,7 +123,7 @@
         return this.items.map( function( item ) {
             return {
                 attr: item.element.getAttribute( attrName ),
-                x: item.rect.x / _this.packer.width
+                x: Math.floor(item.rect.x / _this.packer.width * 100000) / 100000
             }
         });
     };
@@ -152,8 +152,7 @@
             var selector = '[' + attr + '="' + itemPosition.attr  + '"]';
             var itemElem = this.element.querySelector( selector );
             var item = this.getItem( itemElem );
-            item.rect.x = Math.ceil(itemPosition.x*100000)/100000 * this.packer.width;
-            console.log(itemPosition.attr, item.rect.x,itemElem.getBoundingClientRect().width);
+            item.rect.x = Math.ceil(itemPosition.x * this.packer.width);
             return item;
         }, this );
         this.shiftLayout();
@@ -166,6 +165,7 @@
         itemSelector: '.grid-item',
         columnWidth: '.grid-sizer',
         percentPosition: true,
+        gutter: 0,
         initLayout: false // disable initial layout
     });
 
@@ -211,6 +211,10 @@
         var itemElem = items[i];
         draggies.push(new Draggabilly( itemElem ));
         pckry.bindDraggabillyEvents( draggies[i] );
+        draggies[i].on( 'pointerDown', function () {
+//            this.element.style.width = "399px";
+            console.log(this);
+        });
 //        draggies[i].on( 'dragMove', function () {
 //            console.log(this.position.y);
 //        });
@@ -226,15 +230,10 @@
         var _lastX = positions[positions.length-1].x;
         var _nextX = _lastX + (Math.round(_items[_items.length-1].getBoundingClientRect().width * 1000) / 1000) / this.packer.width;
         if (_nextX > 0.99) { _nextX = 0; }
+        console.log(JSON.stringify( positions ));
         // save drag positions
         ajaxUpdateSort("updateSort.php", JSON.stringify( positions ), _nextX);
     });
-
-    var _x = pckry.getItemElements();
-    for (i = 0; i < _x.length; i++) {
-        console.log(_x[i].innerHTML, _x[i].getBoundingClientRect().width);
-    }
-
 
     function ajaxUpdateSort(url, sort, nextX) {
         var xhttp = new XMLHttpRequest();
@@ -255,6 +254,15 @@
         };
         return xhttp;
     }
+
+    $(document).ready(function () {
+//        var _x = pckry.getItemElements();
+//        for (i = 0; i < _x.length; i++) {
+//            console.log(_x[i].innerHTML, _x[i].getBoundingClientRect().width);
+//        }
+//        var _gridWidth = document.getElementById("grid").getBoundingClientRect().width;
+//        console.log(_gridWidth)
+    });
 
 </script>
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Browser</title>
+
+    <script src="js/bowser.js"></script>
+</head>
+<body>
+
+<p id="p"></p>
+
+<script>
+
+    document.getElementById("p").innerHTML = bowser.name + bowser.version;
+
+    (function () {
+
+        var file = "version.txt";
+
+        var trigger = new XMLHttpRequest();
+
+        trigger.open("GET", file, true);
+
+        trigger.onreadystatechange = function () {
+            if (trigger.readyState === 4) {
+                if (trigger.status === 200 || trigger.status === 0) {
+                    var txt = trigger.responseText;
+                    console.log(txt);
+                }
+            }
+        }
+
+        trigger.send(null);
+
+    })();
+
+
+</script>
+
+</body>
+</html>

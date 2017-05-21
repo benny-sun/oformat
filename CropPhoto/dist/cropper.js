@@ -679,7 +679,7 @@ function getTransforms(data) {
     transforms.push('translateY(' + translateY + 'px)');
   }
 
-  // Rotate should come first before scale to match orientation transform
+  // RotateTest should come first before scale to match orientation transform
   if (isNumber(rotate) && rotate !== 0) {
     transforms.push('rotate(' + rotate + 'deg)');
   }
@@ -774,7 +774,7 @@ function getSourceCanvas(image, data) {
     context.translate(translateX, translateY);
   }
 
-  // Rotate should come first before scale as in the "getTransform" function
+  // RotateTest should come first before scale as in the "getTransform" function
   if (rotatable) {
     context.rotate(rotate * Math.PI / 180);
   }
@@ -2333,7 +2333,7 @@ var methods = {
 
 
   /**
-   * Replace the image's src and rebuild the cropper
+   * Replace the image's pel and rebuild the cropper
    *
    * @param {String} url
    * @param {Boolean} onlyColorChanged (optional)
@@ -2554,7 +2554,7 @@ var methods = {
 
 
   /**
-   * Rotate the canvas with a relative degree
+   * RotateTest the canvas with a relative degree
    *
    * @param {Number} degree
    */
@@ -2566,7 +2566,7 @@ var methods = {
 
 
   /**
-   * Rotate the canvas to an absolute degree
+   * RotateTest the canvas to an absolute degree
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function#rotate()
    *
    * @param {Number} degree
