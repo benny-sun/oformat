@@ -35,7 +35,7 @@ Sortable.create(listWithHandle, {
 });
 ```
 
-## 動態載入
+## 動態載入 (Frontend)
 偵測卷軸滾動到最底
 ```js
 $(window).scroll(function() {
@@ -44,9 +44,10 @@ $(window).scroll(function() {
     }
 });
 ```
-
 卷軸到底後，向後端請求資料
 ```js
+start = 1;    // 起始值
+range = 10;   // 每次得到的筆數
 $.ajax({
     url: "接收資料的後台網址",
     method: "GET",
@@ -61,3 +62,8 @@ $.ajax({
     }
 });
 ```
+
+## 動態載入 (Backend)
+取得資料庫資料
+
+
