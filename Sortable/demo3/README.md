@@ -8,7 +8,7 @@
   - jquery.min.js
   
 ## 拖放排序
-範例
+效果範例
 ```html
 <html>
 ...
@@ -39,6 +39,30 @@
 </body>
 </html>
 ```
+儲存範例
+```js
+// javascript
+var demo = Sortable.create(listWithHandle, {
+    handle: '.glyphicon-move',
+    animation: 150,
+    onUpdate: function () {
+        $.ajax({
+            url: "後端處理排序的網址",
+            method: "POST",
+            data: { sort: JSON.stringify(demo.toArray())},
+            success: function () {
+                console.log("order change");
+            }
+        });
+    }
+});
+```
+```php
+if (isset($_POST['sort'])) {
+    // 處理排序存入db
+}
+```
+
 
 ## 動態載入 (Frontend)
 偵測卷軸滾動到最底
