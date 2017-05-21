@@ -56,6 +56,7 @@ $.ajax({
     },
     success: function (data) {
         // 成功請求後台資料
+        // append回傳的版面
     },
     error: function (jqXHR) {
         // 錯誤處理
@@ -64,7 +65,7 @@ $.ajax({
 ```
 
 ## 動態載入 (Backend)
-取得資料庫資料
+取得資料庫資料 (getRecords.php)
 ```php
 require_once '../lib/Database.php';
 
@@ -77,5 +78,9 @@ $db = new Database();
 $rows = $db->getRows("SELECT * FROM table LIMIT $start, $range");
 
 $db->Disconnect();
+
+foreach ($rows as $key => $row) {
+    // 輸出layout
+}
 ```
 
