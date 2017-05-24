@@ -22,8 +22,15 @@ $valid = sgwValidate(id, value, code, allowEmpty, minLength);
 - `sgwAllowEmpty="true"`: 填入Boolean值，是否允許空白，預設`false`
 
 ```html
-<input id="example" class="sgwValid" sgwValid="Email" sgwMinLength="3" sgwAllowEmpty="true" type="text">
+<input id="example1" class="sgwValid" sgwValid="Email" sgwMinLength="3" sgwAllowEmpty="true" type="text">
+<input id="example2" class="sgwValid" sgwValid="Mobile" sgwMinLength="10" sgwAllowEmpty="false" type="text">
+<input id="example3" class="sgwValid" sgwValid="Account" sgwMinLength="6" sgwAllowEmpty="true" type="text">
 ```
+接收回傳陣列
+```js
+ValidScan();
+```
+
 
 ## 回傳值
 - 型態: `Array`
