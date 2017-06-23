@@ -106,9 +106,11 @@
 <!-- Initialize Swiper -->
 <script>
 
+    /* ====== Settings ====== */
+    var _start = 1;     //起始頁
+    var slidesPerView = 5;      //上排顯示的個數
+    /* ====================== */
     var _header_first, _header_end;
-    var slidesPerView = 5;
-
     var header = new Swiper('.sgw-header', {
         slidesPerView: slidesPerView,
         spaceBetween: 6,
@@ -126,6 +128,7 @@
 
     var content = new Swiper('.sgw-content', {
         spaceBetween:1,
+        calculateHeight:true,
         onSlideChangeStart: function (swiper) {
             prev = swiper.previousIndex;
             current = swiper.activeIndex;
@@ -143,6 +146,10 @@
                     header.slideTo(current);
                 }, 200);
             }
+            $('.sgw-content').removeAttr('style');
+            $('.sgw-content').css({
+                'height': swiper.slides.eq(swiper.activeIndex).height()
+            });
         }
     });
 
@@ -152,6 +159,8 @@
         dest = $(this).index();
         content.slideTo(dest);
     });
+    header.slideTo(_start-1,0);
+    content.slideTo(_start-1,0);
 
 
 </script>
