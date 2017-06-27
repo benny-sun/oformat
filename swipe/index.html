@@ -107,13 +107,17 @@
 <script>
 
     /* ====== Settings ====== */
-    var _start = 1;     //起始頁
-    var slidesPerView = 5;      //上排顯示的個數
+    var _start = 1;                 //起始頁
+    var slidesPerView = 5;          //上排顯示的個數
+    var headerIsLocked = false;       //上排TAG是否關閉滑動事件
+    var contentIsLocked = true;      //下排內容是否關閉滑動事件
+    var spaceBetweenHader = 6;      //上排TAG的左右間距
     /* ====================== */
     var _header_first, _header_end;
     var header = new Swiper('.sgw-header', {
         slidesPerView: slidesPerView,
-        spaceBetween: 6,
+        spaceBetween: spaceBetweenHader,
+        onlyExternal: headerIsLocked,
         onInit: function (swiper) {
             current = swiper.activeIndex;
             jQuery($(".sgw-header .swiper-slide")[current]).addClass("red");
@@ -127,8 +131,8 @@
     });
 
     var content = new Swiper('.sgw-content', {
-        spaceBetween:1,
         calculateHeight:true,
+        onlyExternal: contentIsLocked,
         onSlideChangeStart: function (swiper) {
             prev = swiper.previousIndex;
             current = swiper.activeIndex;
